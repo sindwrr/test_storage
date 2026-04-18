@@ -1,0 +1,12 @@
+-- INIT DOWN
+
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS user_groups;
+DROP TABLE IF EXISTS test_artifacts;
+DROP TABLE IF EXISTS test_runs;
+DROP TABLE IF EXISTS file_types;
+DROP TABLE IF EXISTS result_statuses;
+DROP TABLE IF EXISTS run_statuses;
+DROP TABLE IF EXISTS test_suites;
+DROP TABLE IF EXISTS builds;
+DROP TABLE IF EXISTS components;
