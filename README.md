@@ -1,7 +1,7 @@
 # Autotest Result Storage (WIP)
 Autotest result and artifacts storage system
 
-## Project tree
+## Current project tree
 ```
 test_storage
 ├─ README.md
