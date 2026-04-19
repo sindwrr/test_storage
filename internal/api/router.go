@@ -14,6 +14,7 @@ func NewRouter() http.Handler {
 	loginHandler := handlers.NewLoginHandler(authService)
 
 	mux.HandleFunc("/login", loginHandler.Handle)
+	mux.HandleFunc("/logout", handlers.LogoutHandler)
 	mux.HandleFunc("/", handlers.HelloHandler)
 
 	return mux

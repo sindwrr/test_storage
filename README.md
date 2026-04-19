@@ -13,7 +13,8 @@ test_storage
 │  ├─ api
 │  │  ├─ handlers
 │  │  │  ├─ hello.go
-│  │  │  └─ login.go
+│  │  │  ├─ login.go
+│  │  │  └─ logout.go
 │  │  └─ router.go
 │  └─ auth
 │     └─ service.go
