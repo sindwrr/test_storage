@@ -10,10 +10,13 @@ test_storage
 │     └─ main.go
 ├─ go.mod
 ├─ internal
-│  └─ api
-│     ├─ handlers
-│     │  └─ hello.go
-│     └─ router.go
+│  ├─ api
+│  │  ├─ handlers
+│  │  │  ├─ hello.go
+│  │  │  └─ login.go
+│  │  └─ router.go
+│  └─ auth
+│     └─ service.go
 ├─ migrations
 │  ├─ 001_init.down.sql
 │  ├─ 001_init.up.sql
@@ -21,5 +24,6 @@ test_storage
 │  └─ 002_indexes.up.sql
 └─ web
    └─ templates
-      └─ index.html
+      ├─ index.html
+      └─ login.html
 ```

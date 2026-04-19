@@ -3,19 +3,29 @@ package handlers
 import (
 	"html/template"
 	"net/http"
-	"path/filepath"
 )
 
 func HelloHandler(w http.ResponseWriter, r *http.Request) {
-	tmplPath := filepath.Join("web", "templates", "index.html")
+	cookie, err := r.Cookie("session")
+	if err != nil || cookie.Value == "" {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
 
-	tmpl, err := template.ParseFiles(tmplPath)
+	tmpl, err := template.ParseFiles("web/templates/index.html")
 	if err != nil {
 		http.Error(w, "Template error", http.StatusInternalServerError)
 		return
 	}
 
-	err = tmpl.Execute(w, nil)
+	username := cookie.Value
+	data := struct {
+		Username string
+	}{
+		Username: username,
+	}
+
+	err = tmpl.Execute(w, data)
 	if err != nil {
 		http.Error(w, "Render error", http.StatusInternalServerError)
 		return
