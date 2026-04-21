@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/sindwrr/test_storage/internal/api/handlers"
+	"github.com/sindwrr/test_storage/internal/api/middleware"
 	"github.com/sindwrr/test_storage/internal/auth"
 )
 
@@ -15,7 +16,7 @@ func NewRouter() http.Handler {
 
 	mux.HandleFunc("/login", loginHandler.Handle)
 	mux.HandleFunc("/logout", handlers.LogoutHandler)
-	mux.HandleFunc("/", handlers.HelloHandler)
+	mux.HandleFunc("/", middleware.RequireAuth(handlers.HelloHandler))
 
 	return mux
 }
