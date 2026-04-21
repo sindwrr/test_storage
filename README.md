@@ -15,6 +15,8 @@ test_storage
 │  │  │  ├─ hello.go
 │  │  │  ├─ login.go
 │  │  │  └─ logout.go
+│  │  ├─ middleware
+│  │  │  └─ auth.go
 │  │  └─ router.go
 │  └─ auth
 │     └─ service.go
