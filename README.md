@@ -13,6 +13,7 @@ test_storage
 ├─ internal
 │  ├─ api
 │  │  ├─ handlers
+│  │  │  ├─ health.go
 │  │  │  ├─ hello.go
 │  │  │  ├─ login.go
 │  │  │  └─ logout.go
@@ -21,8 +22,11 @@ test_storage
 │  │  └─ router.go
 │  ├─ auth
 │  │  └─ service.go
-│  └─ config
-│     └─ config.go
+│  ├─ config
+│  │  └─ config.go
+│  └─ health
+│     ├─ interface.go
+│     └─ service.go
 ├─ migrations
 │  ├─ 001_init.down.sql
 │  ├─ 001_init.up.sql
