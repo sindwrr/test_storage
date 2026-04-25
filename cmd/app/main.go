@@ -5,6 +5,9 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/golang-migrate/migrate/v4"
+	_ "github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/joho/godotenv"
 	"github.com/sindwrr/test_storage/internal/api"
@@ -28,6 +31,16 @@ func main() {
 	}
 
 	log.Print("Connection with DB established!")
+
+	m, err := migrate.New("file://migrations", cfg.DatabaseURL)
+	if err != nil {
+		log.Fatalf("Failed to setup migrations! Err: %s", err)
+	}
+
+	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
+		log.Fatalf("Failed to apply migrations! Err: %s", err)
+	}
+	log.Print("Applied migrations successfully!")
 
 	router := api.NewRouter(cfg)
 	log.Println("Server starting on :8000")
