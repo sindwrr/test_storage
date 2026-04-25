@@ -8,6 +8,10 @@ test_storage
 ├─ cmd
 │  └─ app
 │     └─ main.go
+├─ docs
+│  ├─ docs.go
+│  ├─ swagger.json
+│  └─ swagger.yaml
 ├─ go.mod
 ├─ go.sum
 ├─ internal
@@ -18,26 +22,27 @@ test_storage
 │  │  │  ├─ login.go
 │  │  │  └─ logout.go
 │  │  ├─ middleware
-│  │  │  └─ auth.go
+│  │  │  ├─ auth.go
+│  │  │  └─ cors.go
 │  │  └─ router.go
 │  ├─ auth
 │  │  └─ service.go
 │  ├─ config
 │  │  └─ config.go
-│  ├─ models
-│  │  ├─ build.go
-│  │  ├─ component.go
-│  │  ├─ file_type.go
-│  │  ├─ result_status.go
-│  │  ├─ run_status.go
-│  │  ├─ test_artifact.go
-│  │  ├─ test_run.go
-│  │  ├─ test_suite.go
-│  │  ├─ user.go
-│  │  └─ user_group.go
-│  └─ health
-│     ├─ interface.go
-│     └─ service.go
+│  ├─ health
+│  │  ├─ interface.go
+│  │  └─ service.go
+│  └─ models
+│     ├─ build.go
+│     ├─ component.go
+│     ├─ file_type.go
+│     ├─ result_status.go
+│     ├─ run_status.go
+│     ├─ test_artifact.go
+│     ├─ test_run.go
+│     ├─ test_suite.go
+│     ├─ user.go
+│     └─ user_group.go
 ├─ migrations
 │  ├─ 001_init.down.sql
 │  ├─ 001_init.up.sql

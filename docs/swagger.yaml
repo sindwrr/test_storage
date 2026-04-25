@@ -1,0 +1,125 @@
+basePath: /
+host: localhost:8000
+info:
+  contact: {}
+  description: API для системы хранения артефактов автотестов.
+  title: Test Storage API
+  version: "1.0"
+paths:
+  /:
+    get:
+      description: Отображает главную HTML-страницу для авторизованного пользователя.
+      produces:
+      - text/html
+      responses:
+        "200":
+          description: HTML-страница
+          schema:
+            type: string
+        "500":
+          description: Ошибка сервера
+          schema:
+            type: string
+      summary: Главная страница
+      tags:
+      - general
+  /health/alive:
+    get:
+      description: Возвращает статус "alive", если сервис работает.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Alive
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Проверка, жив ли сервис
+      tags:
+      - health
+  /health/ready:
+    get:
+      description: Проверяет доступность БД и других зависимостей.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Ready
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "503":
+          description: Not ready
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Проверка готовности сервиса
+      tags:
+      - health
+  /login:
+    get:
+      description: Отображает HTML-страницу с формой для входа в систему.
+      produces:
+      - text/html
+      responses:
+        "200":
+          description: HTML-страница входа
+          schema:
+            type: string
+        "500":
+          description: Ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Страница входа
+      tags:
+      - auth
+    post:
+      consumes:
+      - application/x-www-form-urlencoded
+      description: Аутентифицирует пользователя по логину и паролю из HTML-формы.
+      parameters:
+      - description: Логин
+        in: formData
+        name: username
+        required: true
+        type: string
+      - description: Пароль
+        in: formData
+        name: password
+        required: true
+        type: string
+      responses:
+        "303":
+          description: Редирект на главную страницу
+        "400":
+          description: Плохой запрос
+          schema:
+            type: string
+        "401":
+          description: Неверные учетные данные
+          schema:
+            type: string
+      summary: Войти в систему
+      tags:
+      - auth
+  /logout:
+    post:
+      description: Завершает сеанс пользователя и перенаправляет на страницу входа.
+      responses:
+        "303":
+          description: Редирект на /login
+        "405":
+          description: Метод не разрешен
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Выйти из системы
+      tags:
+      - auth
+swagger: "2.0"

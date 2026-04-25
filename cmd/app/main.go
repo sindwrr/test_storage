@@ -14,6 +14,11 @@ import (
 	"github.com/sindwrr/test_storage/internal/config"
 )
 
+// @title           Test Storage API
+// @version         1.0
+// @description     API для системы хранения артефактов автотестов.
+// @host            localhost:8000
+// @BasePath        /
 func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Println("No .env found. Using system env instead.")

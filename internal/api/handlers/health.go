@@ -7,6 +7,12 @@ import (
 	"github.com/sindwrr/test_storage/internal/health"
 )
 
+// @Summary      Проверка, жив ли сервис
+// @Description  Возвращает статус "alive", если сервис работает.
+// @Tags         health
+// @Produce      json
+// @Success      200  {object}  map[string]string  "Alive"
+// @Router       /health/alive [get]
 func AliveHandler(svc health.HealthService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if err := svc.Alive(r.Context()); err != nil {
@@ -19,6 +25,13 @@ func AliveHandler(svc health.HealthService) http.HandlerFunc {
 	}
 }
 
+// @Summary      Проверка готовности сервиса
+// @Description  Проверяет доступность БД и других зависимостей.
+// @Tags         health
+// @Produce      json
+// @Success      200  {object}  map[string]string  "Ready"
+// @Failure      503  {object}  map[string]string  "Not ready"
+// @Router       /health/ready [get]
 func ReadyHandler(svc health.HealthService) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if err := svc.Ready(r.Context()); err != nil {

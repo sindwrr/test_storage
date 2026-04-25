@@ -5,6 +5,13 @@ import (
 	"net/http"
 )
 
+// @Summary      Главная страница
+// @Description  Отображает главную HTML-страницу для авторизованного пользователя.
+// @Tags         general
+// @Produce      html
+// @Success      200  {string}  string  "HTML-страница"
+// @Failure      500  {string}  string  "Ошибка сервера"
+// @Router       / [get]
 func HelloHandler(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("session")
 	if err != nil || cookie.Value == "" {
