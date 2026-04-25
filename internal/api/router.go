@@ -31,5 +31,7 @@ func NewRouter(db *sql.DB) http.Handler {
 		http.Redirect(w, r, "/docs/index.html", http.StatusMovedPermanently)
 	})
 
+	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))))
+
 	return middleware.CorsMiddleware(mux)
 }

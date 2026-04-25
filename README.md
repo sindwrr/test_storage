@@ -49,6 +49,8 @@ test_storage
 │  ├─ 002_indexes.down.sql
 │  └─ 002_indexes.up.sql
 └─ web
+   ├─ static
+   │  └─ login.css
    └─ templates
       ├─ index.html
       └─ login.html
