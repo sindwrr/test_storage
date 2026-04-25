@@ -24,6 +24,17 @@ test_storage
 │  │  └─ service.go
 │  ├─ config
 │  │  └─ config.go
+│  ├─ models
+│  │  ├─ build.go
+│  │  ├─ component.go
+│  │  ├─ file_type.go
+│  │  ├─ result_status.go
+│  │  ├─ run_status.go
+│  │  ├─ test_artifact.go
+│  │  ├─ test_run.go
+│  │  ├─ test_suite.go
+│  │  ├─ user.go
+│  │  └─ user_group.go
 │  └─ health
 │     ├─ interface.go
 │     └─ service.go
