@@ -9,6 +9,7 @@ test_storage
 │  └─ app
 │     └─ main.go
 ├─ go.mod
+├─ go.sum
 ├─ internal
 │  ├─ api
 │  │  ├─ handlers
@@ -18,8 +19,10 @@ test_storage
 │  │  ├─ middleware
 │  │  │  └─ auth.go
 │  │  └─ router.go
-│  └─ auth
-│     └─ service.go
+│  ├─ auth
+│  │  └─ service.go
+│  └─ config
+│     └─ config.go
 ├─ migrations
 │  ├─ 001_init.down.sql
 │  ├─ 001_init.up.sql

@@ -1,8 +1,6 @@
 package handlers
 
-import (
-	"net/http"
-)
+import "net/http"
 
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
