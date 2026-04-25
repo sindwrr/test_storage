@@ -8,6 +8,10 @@ test_storage
 ├─ cmd
 │  └─ app
 │     └─ main.go
+├─ deployments
+│  ├─ .dockerignore
+│  ├─ Dockerfile
+│  └─ docker-compose.yml
 ├─ docs
 │  ├─ docs.go
 │  ├─ swagger.json
