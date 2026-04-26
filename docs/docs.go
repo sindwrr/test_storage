@@ -190,6 +190,32 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/upload": {
+            "post": {
+                "description": "(Еще не реализован!) Загружает файл артефакта и метаданные.",
+                "tags": [
+                    "upload"
+                ],
+                "summary": "Загрузить файл",
+                "responses": {
+                    "200": {
+                        "description": "Файл успешно загружен",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }`

@@ -47,7 +47,7 @@ func main() {
 	}
 	log.Print("Applied migrations successfully!")
 
-	router := api.NewRouter(db)
+	router := api.NewRouter(db, cfg)
 	log.Println("Server starting on :8000")
 	err = http.ListenAndServe(":8000", router)
 	if err != nil {
