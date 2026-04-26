@@ -124,18 +124,45 @@ paths:
       - auth
   /upload:
     post:
-      description: (Еще не реализован!) Загружает файл артефакта и метаданные.
+      consumes:
+      - multipart/form-data
+      description: Загружает в систему файл артефакта и метаданные.
+      parameters:
+      - description: Файл артефакта
+        in: formData
+        name: file
+        required: true
+        type: file
+      - description: Тестируемый компонент
+        in: query
+        name: component
+        required: true
+        type: string
+      - description: Номер сборки
+        in: query
+        name: build
+        required: true
+        type: string
+      - description: Набор тестов
+        in: query
+        name: suite
+        required: true
+        type: string
+      produces:
+      - text/plain
       responses:
-        "200":
+        "201":
           description: Файл успешно загружен
           schema:
             type: string
-        "500":
-          description: Ошибка сервера
+        "400":
+          description: Ошибка в запросе
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            type: string
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            type: string
       summary: Загрузить файл
       tags:
       - upload

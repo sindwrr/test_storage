@@ -193,25 +193,64 @@ const docTemplate = `{
         },
         "/upload": {
             "post": {
-                "description": "(Еще не реализован!) Загружает файл артефакта и метаданные.",
+                "description": "Загружает в систему файл артефакта и метаданные.",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
                 "tags": [
                     "upload"
                 ],
                 "summary": "Загрузить файл",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "Файл артефакта",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Тестируемый компонент",
+                        "name": "component",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Номер сборки",
+                        "name": "build",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Набор тестов",
+                        "name": "suite",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
                 "responses": {
-                    "200": {
+                    "201": {
                         "description": "Файл успешно загружен",
                         "schema": {
                             "type": "string"
                         }
                     },
-                    "500": {
-                        "description": "Ошибка сервера",
+                    "400": {
+                        "description": "Ошибка в запросе",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Внутренняя ошибка сервера",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }

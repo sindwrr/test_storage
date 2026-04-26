@@ -31,7 +31,7 @@ func NewRouter(db *sql.DB, cfg config.Config) http.Handler {
 	metadataSvc := metadata.NewMetadataService()
 
 	loginHandler := handlers.NewLoginHandler(authSvc)
-	uploadHandler := handlers.NewUploadHandler(storageSvc, metadataSvc)
+	uploadHandler := handlers.NewUploadHandler(storageSvc, metadataSvc, cfg.MaxFileBytes)
 
 	mux.HandleFunc("/login", loginHandler.Handle)
 	mux.HandleFunc("/logout", handlers.LogoutHandler)
