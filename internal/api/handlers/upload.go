@@ -68,13 +68,17 @@ func (h *uploadHandler) Handle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = h.storage.Save(file, header)
+	filePath, err := h.storage.Save(file, header)
 	if err != nil {
 		http.Error(w, "Failed to save file", http.StatusInternalServerError)
 		return
 	}
 
-	// TODO: Add insert to DB in metadata service
+	err = h.metadata.CreateArtifact(filePath, component, build, suite)
+	if err != nil {
+		http.Error(w, "Failed to save metadata in DB", http.StatusInternalServerError)
+		return
+	}
 
 	w.WriteHeader(http.StatusCreated)
 	w.Write([]byte("File was successfully uploaded!"))

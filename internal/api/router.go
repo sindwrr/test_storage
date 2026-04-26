@@ -28,7 +28,7 @@ func NewRouter(db *sql.DB, cfg config.Config) http.Handler {
 		log.Fatalf("Router: failed to create storage service! Err: %s", err)
 	}
 
-	metadataSvc := metadata.NewMetadataService()
+	metadataSvc := metadata.NewMetadataService(db)
 
 	loginHandler := handlers.NewLoginHandler(authSvc)
 	uploadHandler := handlers.NewUploadHandler(storageSvc, metadataSvc, cfg.MaxFileBytes)
