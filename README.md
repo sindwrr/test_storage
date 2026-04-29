@@ -61,7 +61,9 @@ test_storage
 │  ├─ 001_init.down.sql
 │  ├─ 001_init.up.sql
 │  ├─ 002_indexes.down.sql
-│  └─ 002_indexes.up.sql
+│  ├─ 002_indexes.up.sql
+│  ├─ 003_seed.down.sql
+│  └─ 003_seed.up.sql
 └─ web
    ├─ static
    │  └─ login.css
