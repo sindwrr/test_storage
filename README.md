@@ -39,6 +39,9 @@ test_storage
 │  │  └─ service.go
 │  ├─ metadata
 │  │  ├─ interface.go
+│  │  ├─ repository
+│  │  │  ├─ interface.go
+│  │  │  └─ repository.go
 │  │  └─ service.go
 │  ├─ models
 │  │  ├─ build.go
