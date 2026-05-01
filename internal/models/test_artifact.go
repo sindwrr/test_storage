@@ -8,6 +8,7 @@ type TestArtifact struct {
 	StatusID   int       `json:"status_id"`
 	FileURL    string    `json:"file_url"`
 	FileTypeID int       `json:"file_type_id"`
+	FileSize   int64     `json:"file_size"`
 	CreatedAt  time.Time `json:"created_at"`
 	UpdatedAt  time.Time `json:"updated_at"`
 }

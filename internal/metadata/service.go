@@ -23,7 +23,7 @@ func NewMetadataService(db *sql.DB) MetadataService {
 	}
 }
 
-func (s *metadataService) CreateArtifact(filePath string, component string, build string, suite string) error {
+func (s *metadataService) CreateArtifact(filePath string, fileSize int64, component string, build string, suite string) error {
 	ext := filepath.Ext(filePath)
 	fileTypeID := 1
 	switch ext {
@@ -88,6 +88,7 @@ func (s *metadataService) CreateArtifact(filePath string, component string, buil
 		StatusID:   resultStatusID,
 		FileURL:    filePath,
 		FileTypeID: fileTypeID,
+		FileSize:   fileSize,
 		CreatedAt:  now,
 	}
 	if err := s.repo.CreateTestArtifact(ctx, tx, artifactData); err != nil {

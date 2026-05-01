@@ -68,8 +68,8 @@ func (r *postgresRepo) CreateTestRun(ctx context.Context, tx DBTX, run *models.T
 
 func (r *postgresRepo) CreateTestArtifact(ctx context.Context, tx DBTX, a *models.TestArtifact) error {
 	_, err := tx.ExecContext(ctx,
-		`INSERT INTO test_artifacts (run_id, status_id, file_url, file_type_id, created_at, updated_at)
-         VALUES ($1, $2, $3, $4, $5, $6)`,
-		a.RunID, a.StatusID, a.FileURL, a.FileTypeID, a.CreatedAt, a.CreatedAt)
+		`INSERT INTO test_artifacts (run_id, status_id, file_url, file_type_id, file_size, created_at, updated_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+		a.RunID, a.StatusID, a.FileURL, a.FileTypeID, a.FileSize, a.CreatedAt, a.CreatedAt)
 	return err
 }

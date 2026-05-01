@@ -74,7 +74,7 @@ func (h *uploadHandler) Handle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = h.metadata.CreateArtifact(filePath, component, build, suite)
+	err = h.metadata.CreateArtifact(filePath, header.Size, component, build, suite)
 	if err != nil {
 		http.Error(w, "Failed to save metadata in DB", http.StatusInternalServerError)
 		return
