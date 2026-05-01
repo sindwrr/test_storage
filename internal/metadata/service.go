@@ -61,12 +61,12 @@ func (s *metadataService) CreateArtifact(filePath string, component string, buil
 		return fmt.Errorf("suite: %w", err)
 	}
 
-	runStatusID, err := s.repo.GetOrCreateStatus(ctx, tx, "run_statuses", "finished")
+	runStatusID, err := s.repo.GetOrCreateStatus(ctx, tx, "run_statuses", "Finished")
 	if err != nil {
 		return fmt.Errorf("run status: %w", err)
 	}
 
-	resultStatusID, err := s.repo.GetOrCreateStatus(ctx, tx, "result_statuses", "passed")
+	resultStatusID, err := s.repo.GetOrCreateStatus(ctx, tx, "result_statuses", "Passed")
 	if err != nil {
 		return fmt.Errorf("result status: %w", err)
 	}
