@@ -44,6 +44,7 @@ test_storage
 │  │  │  └─ repository.go
 │  │  └─ service.go
 │  ├─ models
+│  │  ├─ artifact_info.go
 │  │  ├─ build.go
 │  │  ├─ component.go
 │  │  ├─ file_type.go

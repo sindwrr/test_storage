@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"time"
 
 	"github.com/sindwrr/test_storage/internal/models"
 )
@@ -20,4 +21,5 @@ type MetadataRepository interface {
 	GetOrCreateStatus(ctx context.Context, tx DBTX, tableName, statusName string) (int, error)
 	CreateTestRun(ctx context.Context, tx DBTX, run *models.TestRun) (int, error)
 	CreateTestArtifact(ctx context.Context, tx DBTX, artifact *models.TestArtifact) error
+	GetArtifactInfo(component string, build string, suite string, fromTime time.Time, toTime time.Time) ([]models.ArtifactInfo, error)
 }

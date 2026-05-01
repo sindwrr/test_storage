@@ -97,3 +97,7 @@ func (s *metadataService) CreateArtifact(filePath string, fileSize int64, compon
 
 	return tx.Commit()
 }
+
+func (s *metadataService) GetArtifactInfo(component, build, suite string, fromTime, toTime time.Time) ([]models.ArtifactInfo, error) {
+	return s.repo.GetArtifactInfo(component, build, suite, fromTime, toTime)
+}

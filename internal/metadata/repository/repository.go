@@ -3,6 +3,8 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"fmt"
+	"time"
 
 	"github.com/sindwrr/test_storage/internal/models"
 )
@@ -72,4 +74,79 @@ func (r *postgresRepo) CreateTestArtifact(ctx context.Context, tx DBTX, a *model
          VALUES ($1, $2, $3, $4, $5, $6, $7)`,
 		a.RunID, a.StatusID, a.FileURL, a.FileTypeID, a.FileSize, a.CreatedAt, a.CreatedAt)
 	return err
+}
+
+func (r *postgresRepo) GetArtifactInfo(component, build, suite string, fromTime, toTime time.Time) ([]models.ArtifactInfo, error) {
+	query := `
+        SELECT
+            ta.file_url AS download_url,
+            ta.file_url AS file_name,
+            ta.file_size AS file_size,
+            c.name AS component,
+            b.name AS build,
+            ts.name AS suite,
+            ta.created_at AS upload_time
+        FROM test_artifacts ta
+        JOIN test_runs tr ON ta.run_id = tr.id
+        JOIN builds b ON tr.build_id = b.id
+        JOIN components c ON b.component_id = c.id
+        JOIN test_suites ts ON tr.suite_id = ts.id
+        WHERE 1=1
+    `
+
+	var args []interface{}
+	argCounter := 1
+
+	if component != "" {
+		query += fmt.Sprintf(" AND c.name = $%d", argCounter)
+		args = append(args, component)
+		argCounter++
+	}
+	if build != "" {
+		query += fmt.Sprintf(" AND b.name = $%d", argCounter)
+		args = append(args, build)
+		argCounter++
+	}
+	if suite != "" {
+		query += fmt.Sprintf(" AND ts.name = $%d", argCounter)
+		args = append(args, suite)
+		argCounter++
+	}
+	if !fromTime.IsZero() {
+		query += fmt.Sprintf(" AND ta.created_at >= $%d", argCounter)
+		args = append(args, fromTime)
+		argCounter++
+	}
+	if !toTime.IsZero() {
+		query += fmt.Sprintf(" AND ta.created_at <= $%d", argCounter)
+		args = append(args, toTime)
+		argCounter++
+	}
+
+	query += " ORDER BY ta.created_at DESC;"
+
+	rows, err := r.db.QueryContext(context.Background(), query, args...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var result []models.ArtifactInfo
+	for rows.Next() {
+		var a models.ArtifactInfo
+		err := rows.Scan(
+			&a.DownloadURL,
+			&a.FileName,
+			&a.FileSize,
+			&a.Component,
+			&a.Build,
+			&a.Suite,
+			&a.UploadTime,
+		)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, a)
+	}
+	return result, rows.Err()
 }
