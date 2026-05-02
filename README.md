@@ -22,7 +22,7 @@ test_storage
 │  ├─ api
 │  │  ├─ handlers
 │  │  │  ├─ health.go
-│  │  │  ├─ hello.go
+│  │  │  ├─ index.go
 │  │  │  ├─ login.go
 │  │  │  ├─ logout.go
 │  │  │  └─ upload.go

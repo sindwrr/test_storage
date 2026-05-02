@@ -32,13 +32,15 @@ func NewRouter(db *sql.DB, cfg config.Config) http.Handler {
 
 	loginHandler := handlers.NewLoginHandler(authSvc)
 	uploadHandler := handlers.NewUploadHandler(storageSvc, metadataSvc, cfg.MaxFileBytes)
+	indexHandler := handlers.NewIndexHandler(metadataSvc)
 
 	mux.HandleFunc("/login", loginHandler.Handle)
 	mux.HandleFunc("/logout", handlers.LogoutHandler)
 	mux.HandleFunc("/health/alive", handlers.AliveHandler(healthSvc))
 	mux.HandleFunc("/health/ready", handlers.ReadyHandler(healthSvc))
-	mux.HandleFunc("/", middleware.RequireAuth(handlers.HelloHandler))
 	mux.HandleFunc("/upload", uploadHandler.Handle)
+
+	mux.HandleFunc("/", middleware.RequireAuth(indexHandler.Handle))
 
 	mux.HandleFunc("/docs/", httpSwagger.WrapHandler)
 	mux.HandleFunc("/docs", func(w http.ResponseWriter, r *http.Request) {

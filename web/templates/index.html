@@ -1,13 +1,39 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Hello</title>
-    </head>
-    <body>
-        <h1>Hello, {{.Username}}!</h1>
-
-        <form method="POST" action="/logout">
+<head>
+    <title>Test Storage</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Welcome, {{.Username}}!</h2>
+        <form action="/logout" method="post">
             <button type="submit">Logout</button>
         </form>
-    </body>
+
+        <table>
+            <tr>
+                <th>File Name</th>
+                <th>Size (bytes)</th>
+                <th>Component</th>
+                <th>Build</th>
+                <th>Suite</th>
+                <th>Upload time</th>
+                <th>Download</th>
+            </tr>
+            {{range .Artifacts}}
+            <tr>
+                <td>{{.FileName}}</td>
+                <td>{{.FileSize}}</td>
+                <td>{{.Component}}</td>
+                <td>{{.Build}}</td>
+                <td>{{.Suite}}</td>
+                <td>{{.UploadTime.Format "2006-01-02 15:04:05.000000"}}</td>
+                <td><a href="{{.DownloadURL}}">Download</a></td>
+            </tr>
+            {{else}}
+            <tr><td colspan="6">No artifacts found.</td></tr>
+            {{end}}
+        </table>
+    </div>
+</body>
 </html>
