@@ -2,17 +2,20 @@
 <html>
 <head>
     <title>Test Storage</title>
+    <link rel="stylesheet" href="/static/index.css">
 </head>
 <body>
-    <div class="container">
+    <header class="top-header">
         <h2>Welcome, {{.Username}}!</h2>
-        <form action="/logout" method="post">
+        <form action="/logout" method="post" class="logout-form">
             <button type="submit">Logout</button>
         </form>
+    </header>
 
+    <div class="container">
         <table>
             <tr>
-                <th>File Name</th>
+                <th>File name</th>
                 <th>Size (bytes)</th>
                 <th>Component</th>
                 <th>Build</th>
@@ -31,7 +34,7 @@
                 <td><a href="{{.DownloadURL}}">Download</a></td>
             </tr>
             {{else}}
-            <tr><td colspan="6">No artifacts found.</td></tr>
+            <tr><td colspan="7">No artifacts found.</td></tr>
             {{end}}
         </table>
     </div>

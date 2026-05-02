@@ -67,6 +67,7 @@ test_storage
 │  └─ 003_seed.up.sql
 └─ web
    ├─ static
+   │  ├─ index.css
    │  └─ login.css
    └─ templates
       ├─ index.html
