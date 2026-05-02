@@ -21,6 +21,7 @@ test_storage
 ├─ internal
 │  ├─ api
 │  │  ├─ handlers
+│  │  │  ├─ download.go
 │  │  │  ├─ health.go
 │  │  │  ├─ index.go
 │  │  │  ├─ login.go

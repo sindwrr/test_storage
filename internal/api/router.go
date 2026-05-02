@@ -33,6 +33,7 @@ func NewRouter(db *sql.DB, cfg config.Config) http.Handler {
 	loginHandler := handlers.NewLoginHandler(authSvc)
 	uploadHandler := handlers.NewUploadHandler(storageSvc, metadataSvc, cfg.MaxFileBytes)
 	indexHandler := handlers.NewIndexHandler(metadataSvc)
+	downloadHandler := handlers.NewDownloadHandler(metadataSvc, storageSvc)
 
 	mux.HandleFunc("/login", loginHandler.Handle)
 	mux.HandleFunc("/logout", handlers.LogoutHandler)
@@ -41,6 +42,7 @@ func NewRouter(db *sql.DB, cfg config.Config) http.Handler {
 	mux.HandleFunc("/upload", uploadHandler.Handle)
 
 	mux.HandleFunc("/", middleware.RequireAuth(indexHandler.Handle))
+	mux.HandleFunc("/artifact/download/{id}", middleware.RequireAuth(downloadHandler.Handle))
 
 	mux.HandleFunc("/docs/", httpSwagger.WrapHandler)
 	mux.HandleFunc("/docs", func(w http.ResponseWriter, r *http.Request) {

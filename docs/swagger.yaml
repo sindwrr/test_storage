@@ -23,6 +23,43 @@ paths:
       summary: Главная страница
       tags:
       - general
+  /artifact/download/{id}:
+    get:
+      description: Скачивает файл артефакта по его ID.
+      parameters:
+      - description: ID артефакта
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/octet-stream
+      responses:
+        "200":
+          description: Файл артефакта
+          schema:
+            type: file
+        "400":
+          description: Некорректный ID
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Артефакт не найден
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Внутренняя ошибка
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Скачать артефакт
+      tags:
+      - artifacts
   /health/alive:
     get:
       description: Возвращает статус "alive", если сервис работает.

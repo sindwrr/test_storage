@@ -41,6 +41,62 @@ const docTemplate = `{
                 }
             }
         },
+        "/artifact/download/{id}": {
+            "get": {
+                "description": "Скачивает файл артефакта по его ID.",
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "tags": [
+                    "artifacts"
+                ],
+                "summary": "Скачать артефакт",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID артефакта",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Файл артефакта",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректный ID",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Артефакт не найден",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Внутренняя ошибка",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/health/alive": {
             "get": {
                 "description": "Возвращает статус \"alive\", если сервис работает.",

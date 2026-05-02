@@ -101,3 +101,7 @@ func (s *metadataService) CreateArtifact(filePath string, fileSize int64, compon
 func (s *metadataService) GetArtifactInfo(component, build, suite string, fromTime, toTime time.Time) ([]models.ArtifactInfo, error) {
 	return s.repo.GetArtifactInfo(component, build, suite, fromTime, toTime)
 }
+
+func (s *metadataService) GetFilePathByID(ctx context.Context, id int64) (string, error) {
+	return s.repo.GetFilePathByID(ctx, id)
+}
