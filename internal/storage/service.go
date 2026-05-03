@@ -6,7 +6,6 @@ import (
 	"mime/multipart"
 	"os"
 	"path/filepath"
-	"strings"
 	"time"
 )
 
@@ -43,13 +42,7 @@ func (s *storageService) Save(file multipart.File, header *multipart.FileHeader)
 func (s *storageService) Open(filePath string) (io.ReadCloser, error) {
 	cleanPath := filepath.Clean(filePath)
 
-	absPath := filepath.Join(s.basePath, cleanPath)
-
-	if !strings.HasPrefix(absPath, s.basePath) {
-		return nil, fmt.Errorf("storage: file not found")
-	}
-
-	file, err := os.Open(absPath)
+	file, err := os.Open(cleanPath)
 	if err != nil {
 		return nil, fmt.Errorf("open file %s: %w", cleanPath, err)
 	}

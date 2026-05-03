@@ -157,7 +157,7 @@ func (r *postgresRepo) GetArtifactInfo(component, build, suite string, fromTime,
 func (r *postgresRepo) GetFilePathByID(ctx context.Context, id int64) (string, error) {
 	var filePath string
 	err := r.db.QueryRowContext(ctx,
-		`SELECT file_url FROM test_artifacts WHERE id = $1`, id,
+		`SELECT file_name FROM test_artifacts WHERE id = $1`, id,
 	).Scan(&filePath)
 	if err != nil {
 		return "", fmt.Errorf("cannot get file path by id: %w", err)
