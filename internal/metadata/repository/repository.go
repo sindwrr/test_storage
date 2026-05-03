@@ -79,6 +79,7 @@ func (r *postgresRepo) CreateTestArtifact(ctx context.Context, tx DBTX, a *model
 func (r *postgresRepo) GetArtifactInfo(component, build, suite string, fromTime, toTime time.Time) ([]models.ArtifactInfo, error) {
 	query := `
         SELECT
+			ta.id AS artifact_id,
             ta.file_url AS download_url,
             ta.file_url AS file_name,
             ta.file_size AS file_size,
@@ -135,6 +136,7 @@ func (r *postgresRepo) GetArtifactInfo(component, build, suite string, fromTime,
 	for rows.Next() {
 		var a models.ArtifactInfo
 		err := rows.Scan(
+			&a.ID,
 			&a.DownloadURL,
 			&a.FileName,
 			&a.FileSize,

@@ -15,6 +15,7 @@
     <div class="container">
         <table>
             <tr>
+                <th>ID</th>
                 <th>File name</th>
                 <th>Size (bytes)</th>
                 <th>Component</th>
@@ -25,6 +26,7 @@
             </tr>
             {{range .Artifacts}}
             <tr>
+                <td>{{.ID}}</td>
                 <td>{{.FileName}}</td>
                 <td>{{.FileSize}}</td>
                 <td>{{.Component}}</td>
@@ -34,7 +36,7 @@
                 <td><a href="{{.DownloadURL}}">Download</a></td>
             </tr>
             {{else}}
-            <tr><td colspan="7">No artifacts found.</td></tr>
+            <tr><td colspan="8">No artifacts found.</td></tr>
             {{end}}
         </table>
     </div>
