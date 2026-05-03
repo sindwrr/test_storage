@@ -23,4 +23,5 @@ type MetadataRepository interface {
 	CreateTestArtifact(ctx context.Context, tx DBTX, artifact *models.TestArtifact) error
 	GetArtifactInfo(component string, build string, suite string, fromTime time.Time, toTime time.Time) ([]models.ArtifactInfo, error)
 	GetFilePathByID(ctx context.Context, id int64) (string, error)
+	UpdateArtifactFileURL(ctx context.Context, tx DBTX, id int, fileURL string) error
 }

@@ -74,6 +74,7 @@ CREATE TABLE test_artifacts (
     run_id INT NOT NULL,
     status_id INT NOT NULL,
     file_url VARCHAR(500) NOT NULL,
+    file_name VARCHAR(500) NOT NULL,
     file_type_id INT NOT NULL,
     file_size INT NOT NULL,
     created_at TIMESTAMPTZ DEFAULT NOW(),

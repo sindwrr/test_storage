@@ -86,13 +86,19 @@ func (s *metadataService) CreateArtifact(filePath string, fileSize int64, compon
 	artifactData := &models.TestArtifact{
 		RunID:      runID,
 		StatusID:   resultStatusID,
-		FileURL:    filePath,
+		FileURL:    "null",
+		FileName:   filePath,
 		FileTypeID: fileTypeID,
 		FileSize:   fileSize,
 		CreatedAt:  now,
 	}
 	if err := s.repo.CreateTestArtifact(ctx, tx, artifactData); err != nil {
 		return fmt.Errorf("artifact: %w", err)
+	}
+
+	downloadPath := fmt.Sprintf("/artifact/download/%d", artifactData.ID)
+	if err := s.repo.UpdateArtifactFileURL(ctx, tx, artifactData.ID, downloadPath); err != nil {
+		return fmt.Errorf("update file url: %w", err)
 	}
 
 	return tx.Commit()

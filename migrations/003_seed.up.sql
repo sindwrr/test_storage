@@ -1,3 +1,5 @@
+-- SEED UP
+
 INSERT INTO file_types (id, name) VALUES (1, 'Log') ON CONFLICT (id) DO NOTHING;
 INSERT INTO file_types (id, name) VALUES (2, 'Image') ON CONFLICT (id) DO NOTHING;
 INSERT INTO file_types (id, name) VALUES (3, 'Video') ON CONFLICT (id) DO NOTHING;

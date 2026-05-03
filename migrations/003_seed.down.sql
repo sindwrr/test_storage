@@ -1,3 +1,14 @@
-DELETE FROM file_types WHERE id IN (1,2,3,4);
-DELETE FROM run_statuses WHERE id IN (1,2,3);
-DELETE FROM result_statuses WHERE id IN (1,2,3,4);
+-- SEED DOWN
+
+TRUNCATE TABLE
+    test_artifacts,
+    test_runs,
+    file_types,
+    result_statuses,
+    run_statuses,
+    test_suites,
+    builds,
+    components,
+    user_groups,
+    users
+CASCADE;
