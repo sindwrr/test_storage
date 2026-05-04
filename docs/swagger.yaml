@@ -1,4 +1,19 @@
 basePath: /
+definitions:
+  analytics.DayCount:
+    properties:
+      count:
+        type: integer
+      date:
+        type: string
+    type: object
+  analytics.StatusCount:
+    properties:
+      count:
+        type: integer
+      status:
+        type: string
+    type: object
 host: localhost:8000
 info:
   contact: {}
@@ -23,6 +38,49 @@ paths:
       summary: Главная страница
       tags:
       - general
+  /analytics/artifacts-per-day:
+    get:
+      description: Возвращает агрегированные данные о количестве загруженных артефактов
+        с группировкой по дням.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешный ответ
+          schema:
+            items:
+              $ref: '#/definitions/analytics.DayCount'
+            type: array
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Количество артефактов по дням
+      tags:
+      - analytics
+  /analytics/status-distribution:
+    get:
+      description: Возвращает распределение прогонов по статусам (Passed, Failed).
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешный ответ
+          schema:
+            items:
+              $ref: '#/definitions/analytics.StatusCount'
+            type: array
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Распределение статусов тестовых прогонов
+      tags:
+      - analytics
   /artifact/download/{id}:
     get:
       description: Скачивает файл артефакта по его ID.

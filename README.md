@@ -19,8 +19,15 @@ test_storage
 ├─ go.mod
 ├─ go.sum
 ├─ internal
+│  ├─ analytics
+│  │  ├─ interface.go
+│  │  ├─ repository
+│  │  │  ├─ interface.go
+│  │  │  └─ repository.go
+│  │  └─ service.go
 │  ├─ api
 │  │  ├─ handlers
+│  │  │  ├─ analytics.go
 │  │  │  ├─ download.go
 │  │  │  ├─ health.go
 │  │  │  ├─ index.go
@@ -45,6 +52,9 @@ test_storage
 │  │  │  └─ repository.go
 │  │  └─ service.go
 │  ├─ models
+│  │  ├─ analytics
+│  │  │  ├─ day_count.go
+│  │  │  └─ status_count.go
 │  │  ├─ artifact_info.go
 │  │  ├─ build.go
 │  │  ├─ component.go

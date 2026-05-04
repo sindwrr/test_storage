@@ -8,6 +8,7 @@ import (
 	httpSwagger "github.com/swaggo/http-swagger"
 
 	_ "github.com/sindwrr/test_storage/docs"
+	"github.com/sindwrr/test_storage/internal/analytics"
 	"github.com/sindwrr/test_storage/internal/api/handlers"
 	"github.com/sindwrr/test_storage/internal/api/middleware"
 	"github.com/sindwrr/test_storage/internal/auth"
@@ -29,11 +30,13 @@ func NewRouter(db *sql.DB, cfg config.Config) http.Handler {
 	}
 
 	metadataSvc := metadata.NewMetadataService(db)
+	analyticsSvc := analytics.NewService(db)
 
 	loginHandler := handlers.NewLoginHandler(authSvc)
 	uploadHandler := handlers.NewUploadHandler(storageSvc, metadataSvc, cfg.MaxFileBytes)
 	indexHandler := handlers.NewIndexHandler(metadataSvc)
 	downloadHandler := handlers.NewDownloadHandler(metadataSvc, storageSvc)
+	analyticsHandler := handlers.NewAnalyticsHandler(analyticsSvc)
 
 	mux.HandleFunc("/login", loginHandler.Handle)
 	mux.HandleFunc("/logout", handlers.LogoutHandler)
@@ -43,6 +46,8 @@ func NewRouter(db *sql.DB, cfg config.Config) http.Handler {
 
 	mux.HandleFunc("/", middleware.RequireAuth(indexHandler.Handle))
 	mux.HandleFunc("/artifact/download/{id}", middleware.RequireAuth(downloadHandler.Handle))
+	mux.HandleFunc("/analytics/artifacts-per-day", middleware.RequireAuth(analyticsHandler.ArtifactsPerDay))
+	mux.HandleFunc("/analytics/status-distribution", middleware.RequireAuth(analyticsHandler.StatusDistribution))
 
 	mux.HandleFunc("/docs/", httpSwagger.WrapHandler)
 	mux.HandleFunc("/docs", func(w http.ResponseWriter, r *http.Request) {
