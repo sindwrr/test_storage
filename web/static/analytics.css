@@ -19,7 +19,6 @@ body {
     box-sizing: border-box;
     z-index: 10;
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    margin-bottom: 50px;
 }
 
 .top-header h2 {
@@ -58,38 +57,14 @@ button:hover {
     padding: 2rem 2.5rem;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    width: 60%;
+    width: 50%;
+    max-width: 900px;
     margin: 2rem auto 0 auto;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.95rem;
-}
-
-th {
-    background-color: #1a73e8;
-    color: white;
-    padding: 0.8rem 0.5rem;
-    text-align: left;
-}
-
-td {
-    padding: 0.8rem 0.5rem;
-    text-align: left;
-    border-bottom: 1px solid #e0e0e0;
-}
-
-tr:hover td {
-    background-color: #f0f6ff;
-}
-
-a {
-    color: #1a73e8;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
+canvas {
+    display: block;
+    margin-bottom: 2rem;
+    max-height: 300px;
+    width: 80%;
 }

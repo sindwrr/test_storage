@@ -78,9 +78,12 @@ test_storage
 │  └─ 003_seed.up.sql
 └─ web
    ├─ static
+   │  ├─ analytics.css
+   │  ├─ analytics.js
    │  ├─ index.css
    │  └─ login.css
    └─ templates
+      ├─ analytics.html
       ├─ index.html
       └─ login.html
 ```

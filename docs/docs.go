@@ -41,6 +41,32 @@ const docTemplate = `{
                 }
             }
         },
+        "/analytics": {
+            "get": {
+                "description": "Возвращает страницу с аналитикой в виде графиков.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "analytics"
+                ],
+                "summary": "Страница аналитики",
+                "responses": {
+                    "200": {
+                        "description": "HTML-страница",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Ошибка сервера",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/analytics/artifacts-per-day": {
             "get": {
                 "description": "Возвращает агрегированные данные о количестве загруженных артефактов с группировкой по дням.",

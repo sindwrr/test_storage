@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"html/template"
 	"net/http"
 
 	"github.com/sindwrr/test_storage/internal/analytics"
@@ -47,4 +48,20 @@ func (h *AnalyticsHandler) StatusDistribution(w http.ResponseWriter, r *http.Req
 	}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(data)
+}
+
+// @Summary      Страница аналитики
+// @Description  Возвращает страницу с аналитикой в виде графиков.
+// @Tags         analytics
+// @Produce      json
+// @Success      200  {string}  string  "HTML-страница"
+// @Failure      500  {string}  string  "Ошибка сервера"
+// @Router       /analytics [get]
+func AnalyticsPageHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.ParseFiles("web/templates/analytics.html")
+	if err != nil {
+		http.Error(w, "Template error", http.StatusInternalServerError)
+		return
+	}
+	tmpl.Execute(w, nil)
 }

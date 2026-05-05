@@ -7,9 +7,14 @@
 <body>
     <header class="top-header">
         <h2>Welcome, {{.Username}}!</h2>
-        <form action="/logout" method="post" class="logout-form">
-            <button type="submit">Logout</button>
-        </form>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <form action="/analytics" method="get" class="header-form">
+                <button type="submit">Analytics</button>
+            </form>
+            <form action="/logout" method="post" class="header-form">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
     </header>
 
     <div class="container">

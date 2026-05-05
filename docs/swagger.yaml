@@ -38,6 +38,23 @@ paths:
       summary: Главная страница
       tags:
       - general
+  /analytics:
+    get:
+      description: Возвращает страницу с аналитикой в виде графиков.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: HTML-страница
+          schema:
+            type: string
+        "500":
+          description: Ошибка сервера
+          schema:
+            type: string
+      summary: Страница аналитики
+      tags:
+      - analytics
   /analytics/artifacts-per-day:
     get:
       description: Возвращает агрегированные данные о количестве загруженных артефактов

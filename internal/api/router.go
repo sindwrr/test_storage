@@ -48,6 +48,7 @@ func NewRouter(db *sql.DB, cfg config.Config) http.Handler {
 	mux.HandleFunc("/artifact/download/{id}", middleware.RequireAuth(downloadHandler.Handle))
 	mux.HandleFunc("/analytics/artifacts-per-day", middleware.RequireAuth(analyticsHandler.ArtifactsPerDay))
 	mux.HandleFunc("/analytics/status-distribution", middleware.RequireAuth(analyticsHandler.StatusDistribution))
+	mux.HandleFunc("/analytics", middleware.RequireAuth(handlers.AnalyticsPageHandler))
 
 	mux.HandleFunc("/docs/", httpSwagger.WrapHandler)
 	mux.HandleFunc("/docs", func(w http.ResponseWriter, r *http.Request) {
