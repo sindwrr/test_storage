@@ -66,9 +66,12 @@ test_storage
 │  │  ├─ test_suite.go
 │  │  ├─ user.go
 │  │  └─ user_group.go
-│  └─ storage
-│     ├─ interface.go
-│     └─ service.go
+│  ├─ storage
+│  │  ├─ interface.go
+│  │  └─ service.go
+│  └─ worker
+│     ├─ pool.go
+│     └─ tasks.go
 ├─ migrations
 │  ├─ 001_init.down.sql
 │  ├─ 001_init.up.sql
