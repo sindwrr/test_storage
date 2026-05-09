@@ -28,6 +28,7 @@ test_storage
 │  ├─ api
 │  │  ├─ handlers
 │  │  │  ├─ analytics.go
+│  │  │  ├─ artifacts.go
 │  │  │  ├─ download.go
 │  │  │  ├─ health.go
 │  │  │  ├─ index.go

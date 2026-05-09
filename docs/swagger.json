@@ -181,6 +181,79 @@
                 }
             }
         },
+        "/artifacts": {
+            "get": {
+                "description": "Возвращает список артефактов в формате JSON, с возможностью фильтрации по компоненту, сборке, набору тестов и временному диапазону.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "artifacts"
+                ],
+                "summary": "Список артефактов с фильтрацией",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Название компонента",
+                        "name": "component",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Номер сборки",
+                        "name": "build",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Название тестового набора",
+                        "name": "suite",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Начальная граница времени загрузки (RFC3339)",
+                        "name": "from",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Конечная граница времени загрузки (RFC3339)",
+                        "name": "to",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список артефактов",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.ArtifactInfo"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректные параметры запроса",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Внутренняя ошибка сервера",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/health/alive": {
             "get": {
                 "description": "Возвращает статус \"alive\", если сервис работает.",
@@ -416,6 +489,37 @@
                     "type": "integer"
                 },
                 "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.ArtifactInfo": {
+            "type": "object",
+            "properties": {
+                "build": {
+                    "type": "string"
+                },
+                "component": {
+                    "type": "string"
+                },
+                "downloadURL": {
+                    "type": "string"
+                },
+                "fileName": {
+                    "type": "string"
+                },
+                "fileSize": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "suite": {
+                    "type": "string"
+                },
+                "uploadTime": {
                     "type": "string"
                 }
             }

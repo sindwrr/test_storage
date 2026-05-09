@@ -37,6 +37,7 @@ func NewRouter(db *sql.DB, cfg config.Config) http.Handler {
 	indexHandler := handlers.NewIndexHandler(metadataSvc)
 	downloadHandler := handlers.NewDownloadHandler(metadataSvc, storageSvc)
 	analyticsHandler := handlers.NewAnalyticsHandler(analyticsSvc)
+	artifactsHandler := handlers.NewArtifactsHandler(metadataSvc)
 
 	mux.HandleFunc("/login", loginHandler.Handle)
 	mux.HandleFunc("/logout", handlers.LogoutHandler)
@@ -46,6 +47,7 @@ func NewRouter(db *sql.DB, cfg config.Config) http.Handler {
 
 	mux.HandleFunc("/", middleware.RequireAuth(indexHandler.Handle))
 	mux.HandleFunc("/artifact/download/{id}", middleware.RequireAuth(downloadHandler.Handle))
+	mux.HandleFunc("/artifacts", middleware.RequireAuth(artifactsHandler.List))
 	mux.HandleFunc("/analytics/artifacts-per-day", middleware.RequireAuth(analyticsHandler.ArtifactsPerDay))
 	mux.HandleFunc("/analytics/status-distribution", middleware.RequireAuth(analyticsHandler.StatusDistribution))
 	mux.HandleFunc("/analytics", middleware.RequireAuth(handlers.AnalyticsPageHandler))

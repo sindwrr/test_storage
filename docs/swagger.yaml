@@ -14,6 +14,27 @@ definitions:
       status:
         type: string
     type: object
+  models.ArtifactInfo:
+    properties:
+      build:
+        type: string
+      component:
+        type: string
+      downloadURL:
+        type: string
+      fileName:
+        type: string
+      fileSize:
+        format: int64
+        type: integer
+      id:
+        format: int64
+        type: integer
+      suite:
+        type: string
+      uploadTime:
+        type: string
+    type: object
 host: localhost:8000
 info:
   contact: {}
@@ -133,6 +154,55 @@ paths:
               type: string
             type: object
       summary: Скачать артефакт
+      tags:
+      - artifacts
+  /artifacts:
+    get:
+      description: Возвращает список артефактов в формате JSON, с возможностью фильтрации
+        по компоненту, сборке, набору тестов и временному диапазону.
+      parameters:
+      - description: Название компонента
+        in: query
+        name: component
+        type: string
+      - description: Номер сборки
+        in: query
+        name: build
+        type: string
+      - description: Название тестового набора
+        in: query
+        name: suite
+        type: string
+      - description: Начальная граница времени загрузки (RFC3339)
+        in: query
+        name: from
+        type: string
+      - description: Конечная граница времени загрузки (RFC3339)
+        in: query
+        name: to
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список артефактов
+          schema:
+            items:
+              $ref: '#/definitions/models.ArtifactInfo'
+            type: array
+        "400":
+          description: Некорректные параметры запроса
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Список артефактов с фильтрацией
       tags:
       - artifacts
   /health/alive:
