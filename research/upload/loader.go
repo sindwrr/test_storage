@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"crypto/rand"
+	"flag"
 	"fmt"
 	"mime/multipart"
 	"net/http"
@@ -11,18 +12,19 @@ import (
 )
 
 const (
-	baseURL     = "http://localhost:8000"
-	concurrency = 30
-	totalReqs   = 100
-	fileSize    = 1024 * 1024 * 10
+	baseURL   = "http://localhost:8000"
+	totalReqs = 200
+	fileSize  = 1024 * 1024 * 30
 )
 
 func main() {
 	cookie := "session=admin"
+	concurrency := flag.Int("c", 1, "число одновременных загрузок")
+	flag.Parse()
 
 	start := time.Now()
 	var wg sync.WaitGroup
-	sem := make(chan struct{}, concurrency)
+	sem := make(chan struct{}, *concurrency)
 
 	var success, fail int
 	var latencies []time.Duration
@@ -90,7 +92,7 @@ func main() {
 	}
 	avgLat := totalLat / time.Duration(success)
 
-	fmt.Printf("Кол-во потоков: %v\n", concurrency)
+	fmt.Printf("Кол-во потоков: %v\n", *concurrency)
 	fmt.Printf("Кол-во запросов: %v\n", totalReqs)
 	fmt.Printf("Размер файла (Б): %v\n", fileSize)
 	fmt.Printf("----------\n")

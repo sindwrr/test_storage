@@ -26,4 +26,4 @@ plt.legend(title="Кол-во одновременных запросов", font
 plt.axhline(y=2000, color="red", linestyle=":", linewidth=2, label="Лимит 2 с")
 
 plt.tight_layout()
-plt.savefig("loader_graph.png")
+plt.savefig("latency_graph.png")

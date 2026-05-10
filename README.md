@@ -81,9 +81,12 @@ test_storage
 │  ├─ 003_seed.down.sql
 │  └─ 003_seed.up.sql
 ├─ research
-│  ├─ loader.go
-│  ├─ loader_graph.png
-│  └─ loader_graph.py
+│  └─ upload
+│     ├─ latency_graph.png
+│     ├─ latency_graph.py
+│     ├─ loader.go
+│     ├─ ram_graph.png
+│     └─ ram_graph.py
 ├─ tests
 └─ web
    ├─ static
