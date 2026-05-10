@@ -80,6 +80,11 @@ test_storage
 │  ├─ 002_indexes.up.sql
 │  ├─ 003_seed.down.sql
 │  └─ 003_seed.up.sql
+├─ research
+│  ├─ loader.go
+│  ├─ loader_graph.png
+│  └─ loader_graph.py
+├─ tests
 └─ web
    ├─ static
    │  ├─ analytics.css
