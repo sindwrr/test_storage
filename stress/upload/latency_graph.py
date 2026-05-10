@@ -20,7 +20,9 @@ plt.xlabel("Размер файла", fontsize=12)
 plt.ylabel("Средняя задержка, мс", fontsize=12)
 plt.title("Зависимость времени отклика от параллельной загрузки в систему", fontsize=14)
 
-plt.grid(True, linestyle="--")
+plt.yscale("log")
+
+plt.grid(True, linestyle="--", which="both")
 plt.legend(title="Кол-во одновременных запросов", fontsize=10)
 
 plt.axhline(y=2000, color="red", linestyle=":", linewidth=2, label="Лимит 2 с")

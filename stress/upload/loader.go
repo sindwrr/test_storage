@@ -13,8 +13,8 @@ import (
 
 const (
 	baseURL   = "http://localhost:8000"
-	totalReqs = 200
-	fileSize  = 1024 * 1024 * 30
+	totalReqs = 1000
+	fileSize  = 1024
 )
 
 func main() {

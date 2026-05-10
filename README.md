@@ -80,10 +80,18 @@ test_storage
 │  ├─ 002_indexes.up.sql
 │  ├─ 003_seed.down.sql
 │  └─ 003_seed.up.sql
-├─ research
+├─ stress
+│  ├─ download
+│  │  ├─ latency_graph.py
+│  │  ├─ latency_graph_lin.png
+│  │  ├─ latency_graph_log.png
+│  │  ├─ loader.go
+│  │  ├─ ram_graph.png
+│  │  └─ ram_graph.py
 │  └─ upload
-│     ├─ latency_graph.png
 │     ├─ latency_graph.py
+│     ├─ latency_graph_lin.png
+│     ├─ latency_graph_log.png
 │     ├─ loader.go
 │     ├─ ram_graph.png
 │     └─ ram_graph.py
