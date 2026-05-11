@@ -80,7 +80,8 @@ test_storage
 │  │  └─ storage_test.go
 │  └─ worker
 │     ├─ pool.go
-│     └─ tasks.go
+│     ├─ tasks.go
+│     └─ worker_test.go
 ├─ migrations
 │  ├─ 001_init.down.sql
 │  ├─ 001_init.up.sql
