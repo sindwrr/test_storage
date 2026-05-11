@@ -53,9 +53,11 @@ test_storage
 │  │  └─ service.go
 │  ├─ metadata
 │  │  ├─ interface.go
+│  │  ├─ metadata_test.go
 │  │  ├─ repository
 │  │  │  ├─ interface.go
-│  │  │  └─ repository.go
+│  │  │  ├─ repository.go
+│  │  │  └─ repository_test.go
 │  │  └─ service.go
 │  ├─ models
 │  │  ├─ analytics
