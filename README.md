@@ -44,6 +44,7 @@ test_storage
 │  ├─ config
 │  │  └─ config.go
 │  ├─ health
+│  │  ├─ health_test.go
 │  │  ├─ interface.go
 │  │  └─ service.go
 │  ├─ metadata

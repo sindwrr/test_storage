@@ -6,8 +6,12 @@ import (
 	"fmt"
 )
 
+type pinger interface {
+	PingContext(ctx context.Context) error
+}
+
 type healthService struct {
-	db *sql.DB
+	db pinger
 }
 
 func NewService(db *sql.DB) HealthService {
