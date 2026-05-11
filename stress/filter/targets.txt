@@ -1,0 +1,59 @@
+GET http://localhost:8000/artifacts?component=comp0&build=build0
+Cookie: session=admin
+
+GET http://localhost:8000/artifacts?component=comp1&suite=suite1
+Cookie: session=admin
+
+GET http://localhost:8000/artifacts?component=comp2&build=build2
+Cookie: session=admin
+
+GET http://localhost:8000/artifacts?component=comp3
+Cookie: session=admin
+
+GET http://localhost:8000/artifacts?component=comp0&suite=suite2
+Cookie: session=admin
+
+GET http://localhost:8000/artifacts?component=comp4&build=build9
+Cookie: session=admin
+
+GET http://localhost:8000/artifacts?component=comp1&build=build1
+Cookie: session=admin
+
+GET http://localhost:8000/artifacts?component=comp2&suite=suite0
+Cookie: session=admin
+
+GET http://localhost:8000/artifacts?component=comp0&suite=suite1
+Cookie: session=admin
+
+GET http://localhost:8000/artifacts?component=comp3&build=build3
+Cookie: session=admin
+
+GET http://localhost:8000/artifacts?component=comp4&suite=suite0
+Cookie: session=admin
+
+GET http://localhost:8000/artifacts?component=comp3&build=build8&suite=suite2
+Cookie: session=admin
+
+GET http://localhost:8000/artifacts?component=comp2&build=build8
+Cookie: session=admin
+
+GET http://localhost:8000/artifacts?component=comp0&build=build4&suite=suite1
+Cookie: session=admin
+
+GET http://localhost:8000/artifacts?component=comp3&suite=suite2
+Cookie: session=admin
+
+GET http://localhost:8000/artifacts?component=comp4&build=build4
+Cookie: session=admin
+
+GET http://localhost:8000/artifacts?component=comp1&suite=suite0
+Cookie: session=admin
+
+GET http://localhost:8000/artifacts?component=comp2&build=build3&suite=suite1
+Cookie: session=admin
+
+GET http://localhost:8000/artifacts?component=comp1&build=build6
+Cookie: session=admin
+
+GET http://localhost:8000/artifacts?component=comp2&build=build7&suite=suite1
+Cookie: session=admin

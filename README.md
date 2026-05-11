@@ -88,6 +88,9 @@ test_storage
 │  │  ├─ loader.go
 │  │  ├─ ram_graph.png
 │  │  └─ ram_graph.py
+│  ├─ filter
+│  │  ├─ targets.txt
+│  │  └─ vegeta_log.txt
 │  └─ upload
 │     ├─ latency_graph.py
 │     ├─ latency_graph_lin.png
