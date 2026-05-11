@@ -20,10 +20,12 @@ test_storage
 ├─ go.sum
 ├─ internal
 │  ├─ analytics
+│  │  ├─ analytics_test.go
 │  │  ├─ interface.go
 │  │  ├─ repository
 │  │  │  ├─ interface.go
-│  │  │  └─ repository.go
+│  │  │  ├─ repository.go
+│  │  │  └─ repository_test.go
 │  │  └─ service.go
 │  ├─ api
 │  │  ├─ handlers
