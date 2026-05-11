@@ -39,6 +39,7 @@ test_storage
 │  │  │  └─ upload.go
 │  │  ├─ middleware
 │  │  │  ├─ auth.go
+│  │  │  ├─ auth_test.go
 │  │  │  └─ cors.go
 │  │  └─ router.go
 │  ├─ auth
@@ -46,7 +47,8 @@ test_storage
 │  │  ├─ interface.go
 │  │  └─ service.go
 │  ├─ config
-│  │  └─ config.go
+│  │  ├─ config.go
+│  │  └─ config_test.go
 │  ├─ health
 │  │  ├─ health_test.go
 │  │  ├─ interface.go
