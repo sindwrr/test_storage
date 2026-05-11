@@ -108,6 +108,7 @@ test_storage
 │     ├─ ram_graph.png
 │     └─ ram_graph.py
 ├─ tests
+│  └─ integration.go
 └─ web
    ├─ static
    │  ├─ analytics.css
