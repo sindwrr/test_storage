@@ -29,7 +29,7 @@ func TestReady_NilDB(t *testing.T) {
 		t.Fatal("Ready got nil")
 	}
 	if err.Error() != "DB not configured!" {
-		t.Fatalf("Wrong error: %s", err.Error())
+		t.Fatalf("wrong error: %s", err.Error())
 	}
 }
 
@@ -41,7 +41,7 @@ func TestReady_PingError(t *testing.T) {
 		t.Fatal("Ready got nil")
 	}
 	if err != expectedErr {
-		t.Fatalf("Expected error: %v, got error: %v", expectedErr, err)
+		t.Fatalf("expected error: %v, got error: %v", expectedErr, err)
 	}
 }
 

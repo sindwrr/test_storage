@@ -70,7 +70,8 @@ test_storage
 │  │  └─ user_group.go
 │  ├─ storage
 │  │  ├─ interface.go
-│  │  └─ service.go
+│  │  ├─ service.go
+│  │  └─ storage_test.go
 │  └─ worker
 │     ├─ pool.go
 │     └─ tasks.go
