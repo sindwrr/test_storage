@@ -8,11 +8,11 @@ import (
 )
 
 type LoginHandler struct {
-	auth *auth.Service
+	auth auth.AuthService
 	tmpl *template.Template
 }
 
-func NewLoginHandler(a *auth.Service) *LoginHandler {
+func NewLoginHandler(a auth.AuthService) *LoginHandler {
 	tmpl := template.Must(template.ParseFiles("web/templates/login.html"))
 	return &LoginHandler{
 		auth: a,

@@ -40,6 +40,8 @@ test_storage
 │  │  │  └─ cors.go
 │  │  └─ router.go
 │  ├─ auth
+│  │  ├─ auth_test.go
+│  │  ├─ interface.go
 │  │  └─ service.go
 │  ├─ config
 │  │  └─ config.go

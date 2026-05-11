@@ -1,12 +1,12 @@
 package auth
 
-type Service struct{}
+type authService struct{}
 
-func NewService() *Service {
-	return &Service{}
+func NewService() AuthService {
+	return &authService{}
 }
 
-func (s *Service) Validate(username, password string) bool {
-	// TODO: replace with DB later
+func (s *authService) Validate(username, password string) bool {
+	// TODO: replace with full auth later
 	return username == "admin" && password == "123"
 }
