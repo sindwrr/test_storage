@@ -7,7 +7,8 @@ test_storage
 ├─ README.md
 ├─ cmd
 │  └─ app
-│     └─ main.go
+│     ├─ main.go
+│     └─ main_test.go
 ├─ deployments
 │  ├─ .dockerignore
 │  ├─ Dockerfile
@@ -30,18 +31,28 @@ test_storage
 │  ├─ api
 │  │  ├─ handlers
 │  │  │  ├─ analytics.go
+│  │  │  ├─ analytics_test.go
 │  │  │  ├─ artifacts.go
+│  │  │  ├─ artifacts_test.go
 │  │  │  ├─ download.go
+│  │  │  ├─ download_test.go
 │  │  │  ├─ health.go
+│  │  │  ├─ health_test.go
 │  │  │  ├─ index.go
 │  │  │  ├─ login.go
+│  │  │  ├─ login_test.go
 │  │  │  ├─ logout.go
-│  │  │  └─ upload.go
+│  │  │  ├─ logout_test.go
+│  │  │  ├─ mocks.go
+│  │  │  ├─ upload.go
+│  │  │  └─ upload_test.go
 │  │  ├─ middleware
 │  │  │  ├─ auth.go
 │  │  │  ├─ auth_test.go
-│  │  │  └─ cors.go
-│  │  └─ router.go
+│  │  │  ├─ cors.go
+│  │  │  └─ cors_test.go
+│  │  ├─ router.go
+│  │  └─ router_test.go
 │  ├─ auth
 │  │  ├─ auth_test.go
 │  │  ├─ interface.go
@@ -63,12 +74,14 @@ test_storage
 │  │  └─ service.go
 │  ├─ models
 │  │  ├─ analytics
+│  │  │  ├─ analytics_test.go
 │  │  │  ├─ day_count.go
 │  │  │  └─ status_count.go
 │  │  ├─ artifact_info.go
 │  │  ├─ build.go
 │  │  ├─ component.go
 │  │  ├─ file_type.go
+│  │  ├─ models_test.go
 │  │  ├─ result_status.go
 │  │  ├─ run_status.go
 │  │  ├─ test_artifact.go

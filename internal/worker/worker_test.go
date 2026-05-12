@@ -173,3 +173,10 @@ func TestIntegrityCheckTask_QueryError(t *testing.T) {
 	assert.Contains(t, err.Error(), "query artifacts")
 	assert.NoError(t, mock.ExpectationsWereMet())
 }
+
+func TestIntegrityCheckTask_Name(t *testing.T) {
+	task := IntegrityCheckTask{DB: nil, BasePath: "/tmp"}
+	if name := task.Name(); name != "integrity-check" {
+		t.Errorf("expected 'integrity-check', got %q", name)
+	}
+}
