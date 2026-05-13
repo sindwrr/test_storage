@@ -56,6 +56,10 @@ test_storage
 │  ├─ auth
 │  │  ├─ auth_test.go
 │  │  ├─ interface.go
+│  │  ├─ repository
+│  │  │  ├─ interface.go
+│  │  │  ├─ repository.go
+│  │  │  └─ repository_test.go
 │  │  └─ service.go
 │  ├─ config
 │  │  ├─ config.go

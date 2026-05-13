@@ -11,4 +11,5 @@ type ArtifactInfo struct {
 	Build       string
 	Suite       string
 	UploadTime  time.Time
+	Result      string
 }
