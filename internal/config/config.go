@@ -9,6 +9,10 @@ type Config struct {
 	DatabaseURL    string
 	ArtifactVolume string
 	MaxFileBytes   int64
+	LDAPAddr       string
+	LDAPBaseDN     string
+	LDAPUser       string
+	LDAPPassword   string
 }
 
 func Load() Config {
@@ -28,5 +32,9 @@ func Load() Config {
 		DatabaseURL:    os.Getenv("DATABASE_URL"),
 		ArtifactVolume: vol,
 		MaxFileBytes:   maxBytes,
+		LDAPAddr:       os.Getenv("LDAP_ADDR"),
+		LDAPBaseDN:     os.Getenv("LDAP_BASE_DN"),
+		LDAPUser:       os.Getenv("LDAP_USER"),
+		LDAPPassword:   os.Getenv("LDAP_PASSWORD"),
 	}
 }
