@@ -18,6 +18,25 @@
     </header>
 
     <div class="container">
+        <form method="get" action="/" class="filter-form">
+            <div class="filter-row">
+                <label>
+                    Component:
+                    <input type="text" name="component" value="" placeholder="Any">
+                </label>
+                <label>
+                    Build:
+                    <input type="text" name="build" value="" placeholder="Any">
+                </label>
+                <label>
+                    Suite:
+                    <input type="text" name="suite" value="" placeholder="Any">
+                </label>
+                <button type="submit" class="filter-btn">Filter</button>
+                <a href="/" class="clear-btn">Clear</a>
+            </div>
+        </form>
+
         <table>
             <tr>
                 <th>ID</th>

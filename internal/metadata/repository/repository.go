@@ -88,13 +88,13 @@ func (r *postgresRepo) GetArtifactInfo(component, build, suite string, fromTime,
             b.name AS build,
             ts.name AS suite,
             ta.created_at AS upload_time,
-			rns.name AS result
+			rs.name AS result
         FROM test_artifacts ta
         JOIN test_runs tr ON ta.run_id = tr.id
         JOIN builds b ON tr.build_id = b.id
         JOIN components c ON b.component_id = c.id
         JOIN test_suites ts ON tr.suite_id = ts.id
-		JOIN run_statuses rns ON tr.status_id = rns.id
+		JOIN result_statuses rs ON ta.status_id = rs.id
         WHERE 1=1
     `
 

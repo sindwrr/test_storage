@@ -93,3 +93,71 @@ a {
 a:hover {
     text-decoration: underline;
 }
+
+.filter-form {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+}
+
+.filter-row label {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.85rem;
+    color: #555;
+    gap: 0.3rem;
+}
+
+.filter-row input {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    width: 180px;
+}
+
+.filter-row input:focus {
+    outline: none;
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 2px rgba(26,115,232,0.2);
+}
+
+.filter-btn {
+    padding: 0.5rem 1.5rem;
+    background: #1a73e8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    align-self: flex-end;
+}
+
+.filter-btn:hover {
+    background: #1557b0;
+}
+
+.clear-btn {
+    text-decoration: none;
+    color: #666;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #fafafa;
+    align-self: flex-end;
+}
+
+.clear-btn:hover {
+    background: #eee;
+    color: #333;
+}
