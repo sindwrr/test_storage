@@ -56,10 +56,10 @@ func TestStatusDistribution_Success(t *testing.T) {
 
 	mock.ExpectQuery(regexp.QuoteMeta(
 		`SELECT rs.name, count(*)
-         FROM test_runs tr
-         JOIN run_statuses rs ON tr.status_id = rs.id
-         GROUP BY rs.name
-         ORDER BY rs.name`)).
+		FROM test_artifacts ta
+		JOIN result_statuses rs ON ta.status_id = rs.id
+		GROUP BY rs.name
+		ORDER BY rs.name`)).
 		WillReturnRows(rows)
 
 	got, err := repo.StatusDistribution(context.Background())

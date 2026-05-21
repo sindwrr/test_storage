@@ -230,19 +230,20 @@ func TestGetArtifactInfo_NoFilters(t *testing.T) {
 
 	baseQuery := `SELECT ta.id AS artifact_id, ta.file_url AS download_url, ` +
 		`ta.file_name AS file_name, ta.file_size AS file_size, c.name AS component, ` +
-		`b.name AS build, ts.name AS suite, ta.created_at AS upload_time ` +
+		`b.name AS build, ts.name AS suite, ta.created_at AS upload_time, rs.name AS result ` +
 		`FROM test_artifacts ta ` +
 		`JOIN test_runs tr ON ta.run_id = tr.id ` +
 		`JOIN builds b ON tr.build_id = b.id ` +
 		`JOIN components c ON b.component_id = c.id ` +
 		`JOIN test_suites ts ON tr.suite_id = ts.id ` +
+		`JOIN result_statuses rs ON ta.status_id = rs.id ` +
 		`WHERE 1=1 ORDER BY ta.created_at DESC;`
 
 	mock.ExpectQuery(baseQuery).
 		WillReturnRows(sqlmock.NewRows([]string{
 			"artifact_id", "download_url", "file_name", "file_size",
-			"component", "build", "suite", "upload_time",
-		}).AddRow(1, "/dl/1", "a.txt", 500, "core", "v1", "smoke", time.Now()))
+			"component", "build", "suite", "upload_time", "result",
+		}).AddRow(1, "/dl/1", "a.txt", 500, "core", "v1", "smoke", time.Now(), "passed"))
 
 	results, err := repo.GetArtifactInfo("", "", "", time.Time{}, time.Time{})
 	assert.NoError(t, err)
@@ -269,8 +270,8 @@ func TestGetArtifactInfo_WithFilters(t *testing.T) {
 		WithArgs("core", from, to).
 		WillReturnRows(sqlmock.NewRows([]string{
 			"artifact_id", "download_url", "file_name", "file_size",
-			"component", "build", "suite", "upload_time",
-		}).AddRow(2, "/dl/2", "b.log", 1200, "core", "v2", "regression", time.Now()))
+			"component", "build", "suite", "upload_time", "result", // добавлено "result"
+		}).AddRow(2, "/dl/2", "b.log", 1200, "core", "v2", "regression", time.Now(), "passed"))
 
 	results, err := repo.GetArtifactInfo("core", "", "", from, to)
 	assert.NoError(t, err)
