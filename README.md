@@ -39,6 +39,7 @@ test_storage
 │  │  │  ├─ health.go
 │  │  │  ├─ health_test.go
 │  │  │  ├─ index.go
+│  │  │  ├─ index_test.go
 │  │  │  ├─ login.go
 │  │  │  ├─ login_test.go
 │  │  │  ├─ logout.go

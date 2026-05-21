@@ -7,11 +7,32 @@ import (
 	"github.com/go-ldap/ldap/v3"
 )
 
+type ldapConn interface {
+	Bind(username, password string) error
+	Search(*ldap.SearchRequest) (*ldap.SearchResult, error)
+	Close()
+}
+
+type realLdapConn struct {
+	conn *ldap.Conn
+}
+
+func (r *realLdapConn) Bind(username, password string) error {
+	return r.conn.Bind(username, password)
+}
+func (r *realLdapConn) Search(req *ldap.SearchRequest) (*ldap.SearchResult, error) {
+	return r.conn.Search(req)
+}
+func (r *realLdapConn) Close() {
+	r.conn.Close()
+}
+
 type authService struct {
 	ldapAddr     string
 	ldapBaseDN   string
 	bindUser     string
 	bindPassword string
+	dialer       func(addr string) (ldapConn, error)
 }
 
 func NewService(ldapAddr, ldapBaseDN, bindUser, bindPassword string) AuthService {
@@ -20,17 +41,25 @@ func NewService(ldapAddr, ldapBaseDN, bindUser, bindPassword string) AuthService
 		ldapBaseDN:   ldapBaseDN,
 		bindUser:     bindUser,
 		bindPassword: bindPassword,
+		dialer: func(addr string) (ldapConn, error) {
+			conn, err := ldap.DialURL(fmt.Sprintf("ldap://%s", addr))
+			if err != nil {
+				return nil, err
+			}
+			return &realLdapConn{conn: conn}, nil
+		},
 	}
 }
 
 func (s *authService) Validate(username, password string) bool {
-	conn, err := ldap.DialURL(fmt.Sprintf("ldap://%s", s.ldapAddr))
+	conn, err := s.dialer(s.ldapAddr)
 	if err != nil {
 		log.Printf("LDAP dial error: %v", err)
 		return false
 	}
 	defer conn.Close()
 
+	authenticated := false
 	if s.bindUser != "" {
 		err = conn.Bind(s.bindUser, s.bindPassword)
 		if err != nil {
@@ -50,9 +79,11 @@ func (s *authService) Validate(username, password string) bool {
 			return false
 		}
 		err = conn.Bind(sr.Entries[0].DN, password)
-		return err == nil
+		authenticated = (err == nil)
+	} else {
+		err = conn.Bind(username, password)
+		authenticated = (err == nil)
 	}
 
-	err = conn.Bind(username, password)
-	return err == nil
+	return authenticated
 }

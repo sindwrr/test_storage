@@ -4,6 +4,8 @@ import (
 	"context"
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/sindwrr/test_storage/internal/models/analytics"
@@ -59,5 +61,40 @@ func TestStatusDistribution_ReturnsJSON(t *testing.T) {
 
 	if rec.Code != http.StatusOK {
 		t.Errorf("expected 200, got %d", rec.Code)
+	}
+}
+
+func TestAnalyticsPageHandler_Success(t *testing.T) {
+	tmpDir := t.TempDir()
+	templatesDir := filepath.Join(tmpDir, "web", "templates")
+	err := os.MkdirAll(templatesDir, 0755)
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = os.WriteFile(filepath.Join(templatesDir, "analytics.html"), []byte("<html></html>"), 0644)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	origWd, _ := os.Getwd()
+	defer os.Chdir(origWd)
+	os.Chdir(tmpDir)
+
+	req := httptest.NewRequest("GET", "/analytics", nil)
+	rec := httptest.NewRecorder()
+	AnalyticsPageHandler(rec, req)
+
+	if rec.Code != http.StatusOK {
+		t.Errorf("expected 200, got %d", rec.Code)
+	}
+}
+
+func TestAnalyticsPageHandler_TemplateError(t *testing.T) {
+	req := httptest.NewRequest("GET", "/analytics", nil)
+	rec := httptest.NewRecorder()
+	AnalyticsPageHandler(rec, req)
+
+	if rec.Code != http.StatusInternalServerError {
+		t.Errorf("expected 500, got %d", rec.Code)
 	}
 }

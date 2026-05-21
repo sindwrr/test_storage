@@ -3,12 +3,15 @@ package metadata
 import (
 	"context"
 	"errors"
+	"fmt"
 	"testing"
 	"time"
 
+	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/sindwrr/test_storage/internal/metadata/repository"
 	"github.com/sindwrr/test_storage/internal/models"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 type mockMetadataRepo struct {
@@ -135,4 +138,132 @@ func TestGetFilePathByID_Error(t *testing.T) {
 	svc := &metadataService{repo: repo}
 	_, err := svc.GetFilePathByID(context.Background(), 1)
 	assert.Error(t, err)
+}
+
+func setupServiceWithDB(t *testing.T) (*metadataService, *mockMetadataRepo, sqlmock.Sqlmock, func()) {
+	t.Helper()
+
+	db, mock, err := sqlmock.New()
+	require.NoError(t, err)
+
+	repo := &mockMetadataRepo{}
+	svc := &metadataService{
+		db:   db,
+		repo: repo,
+	}
+
+	cleanup := func() { db.Close() }
+	return svc, repo, mock, cleanup
+}
+
+func TestCreateArtifact_Success(t *testing.T) {
+	svc, repo, mock, cleanup := setupServiceWithDB(t)
+	defer cleanup()
+
+	repo.GetOrCreateComponentFn = func(ctx context.Context, tx repository.DBTX, name string) (int, error) {
+		assert.Equal(t, "core", name)
+		return 1, nil
+	}
+	repo.GetOrCreateBuildFn = func(ctx context.Context, tx repository.DBTX, componentID int, name string) (int, error) {
+		assert.Equal(t, 1, componentID)
+		assert.Equal(t, "v1.0", name)
+		return 2, nil
+	}
+	repo.GetOrCreateSuiteFn = func(ctx context.Context, tx repository.DBTX, name string) (int, error) {
+		assert.Equal(t, "smoke", name)
+		return 3, nil
+	}
+	repo.GetOrCreateStatusFn = func(ctx context.Context, tx repository.DBTX, tableName, statusName string) (int, error) {
+		if tableName == "run_statuses" {
+			assert.Equal(t, "Finished", statusName)
+			return 4, nil
+		}
+		if tableName == "result_statuses" {
+			assert.Equal(t, "Passed", statusName)
+			return 5, nil
+		}
+		return 0, fmt.Errorf("unexpected table")
+	}
+	repo.CreateTestRunFn = func(ctx context.Context, tx repository.DBTX, run *models.TestRun) (int, error) {
+		assert.Equal(t, 2, run.BuildID)
+		assert.Equal(t, 3, run.SuiteID)
+		assert.Equal(t, 4, run.StatusID)
+		return 10, nil
+	}
+	repo.CreateTestArtifactFn = func(ctx context.Context, tx repository.DBTX, artifact *models.TestArtifact) error {
+		assert.Equal(t, 10, artifact.RunID)
+		assert.Equal(t, 5, artifact.StatusID)
+		assert.Equal(t, "/tmp/test.log", artifact.FileName)
+		artifact.ID = 100
+		return nil
+	}
+	repo.UpdateArtifactFileURLFn = func(ctx context.Context, tx repository.DBTX, id int, fileURL string) error {
+		assert.Equal(t, 100, id)
+		assert.Equal(t, "/artifact/download/100", fileURL)
+		return nil
+	}
+
+	mock.ExpectBegin()
+	mock.ExpectCommit()
+
+	err := svc.CreateArtifact("/tmp/test.log", 1024, "core", "v1.0", "smoke")
+	assert.NoError(t, err)
+	assert.NoError(t, mock.ExpectationsWereMet())
+}
+
+func TestCreateArtifact_BeginTxError(t *testing.T) {
+	svc, _, mock, cleanup := setupServiceWithDB(t)
+	defer cleanup()
+
+	mock.ExpectBegin().WillReturnError(errors.New("connection refused"))
+
+	err := svc.CreateArtifact("/tmp/test.log", 1024, "core", "v1", "smoke")
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "begin tx")
+	assert.NoError(t, mock.ExpectationsWereMet())
+}
+
+func TestCreateArtifact_ComponentError(t *testing.T) {
+	svc, repo, mock, cleanup := setupServiceWithDB(t)
+	defer cleanup()
+
+	repo.GetOrCreateComponentFn = func(ctx context.Context, tx repository.DBTX, name string) (int, error) {
+		return 0, errors.New("component error")
+	}
+
+	mock.ExpectBegin()
+	mock.ExpectRollback()
+
+	err := svc.CreateArtifact("/tmp/test.log", 1024, "core", "v1", "smoke")
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "component")
+	assert.NoError(t, mock.ExpectationsWereMet())
+}
+
+func TestCreateArtifact_CommitError(t *testing.T) {
+	svc, repo, mock, cleanup := setupServiceWithDB(t)
+	defer cleanup()
+
+	repo.GetOrCreateComponentFn = func(ctx context.Context, tx repository.DBTX, name string) (int, error) { return 1, nil }
+	repo.GetOrCreateBuildFn = func(ctx context.Context, tx repository.DBTX, componentID int, name string) (int, error) {
+		return 2, nil
+	}
+	repo.GetOrCreateSuiteFn = func(ctx context.Context, tx repository.DBTX, name string) (int, error) { return 3, nil }
+	repo.GetOrCreateStatusFn = func(ctx context.Context, tx repository.DBTX, tableName, statusName string) (int, error) {
+		return 1, nil
+	}
+	repo.CreateTestRunFn = func(ctx context.Context, tx repository.DBTX, run *models.TestRun) (int, error) { return 10, nil }
+	repo.CreateTestArtifactFn = func(ctx context.Context, tx repository.DBTX, artifact *models.TestArtifact) error {
+		artifact.ID = 100
+		return nil
+	}
+	repo.UpdateArtifactFileURLFn = func(ctx context.Context, tx repository.DBTX, id int, fileURL string) error { return nil }
+
+	mock.ExpectBegin()
+	mock.ExpectCommit().WillReturnError(errors.New("commit error"))
+
+	err := svc.CreateArtifact("/tmp/test.log", 1024, "core", "v1", "smoke")
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "commit")
+	assert.NoError(t, mock.ExpectationsWereMet())
 }
