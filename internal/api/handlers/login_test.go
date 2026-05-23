@@ -1,11 +1,15 @@
 package handlers
 
 import (
+	"errors"
 	"html/template"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestShowLogin_ReturnsOK(t *testing.T) {
@@ -73,4 +77,50 @@ func TestLogin_InvalidCredentials(t *testing.T) {
 	if rec.Code != http.StatusUnauthorized {
 		t.Errorf("expected 401, got %d", rec.Code)
 	}
+}
+
+func TestHandle_MethodNotAllowed(t *testing.T) {
+	tmpl := template.Must(template.New("login").Parse("irrelevant"))
+	h := &LoginHandler{
+		auth: &mockAuthService{},
+		tmpl: tmpl,
+	}
+	req := httptest.NewRequest(http.MethodPut, "/login", nil)
+	rec := httptest.NewRecorder()
+	h.Handle(rec, req)
+
+	assert.Equal(t, http.StatusMethodNotAllowed, rec.Code)
+}
+
+type errReader struct{}
+
+func (e errReader) Read(p []byte) (int, error) {
+	return 0, errors.New("read error")
+}
+
+func TestLogin_ParseFormError(t *testing.T) {
+	h := &LoginHandler{
+		auth: &mockAuthService{},
+		tmpl: template.Must(template.New("login").Parse("irrelevant")),
+	}
+	req := httptest.NewRequest(http.MethodPost, "/login", nil)
+	req.Body = io.NopCloser(errReader{})
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	rec := httptest.NewRecorder()
+	h.Login(rec, req)
+
+	assert.Equal(t, http.StatusBadRequest, rec.Code)
+}
+
+func TestShowLogin_TemplateError(t *testing.T) {
+	tmpl := template.Must(template.New("login").Parse(`{{ template "nonexistent" }}`))
+	h := &LoginHandler{
+		auth: &mockAuthService{},
+		tmpl: tmpl,
+	}
+	req := httptest.NewRequest(http.MethodGet, "/login", nil)
+	rec := httptest.NewRecorder()
+	h.ShowLogin(rec, req)
+
+	assert.Equal(t, http.StatusInternalServerError, rec.Code)
 }

@@ -9,6 +9,9 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func createMultipartFileHelper(t *testing.T, fileName, content string) (multipart.File, *multipart.FileHeader) {
@@ -59,6 +62,12 @@ func TestNewStorageService_CreatesDir(t *testing.T) {
 	}
 }
 
+func TestNewStorageService_MkdirError(t *testing.T) {
+	// Путь с нулевым байтом гарантированно вызывает ошибку
+	_, err := NewStorageService("/invalid\x00path")
+	assert.Error(t, err)
+}
+
 func TestSaveAndOpen(t *testing.T) {
 	tmpDir := t.TempDir()
 	svc, err := NewStorageService(tmpDir)
@@ -102,6 +111,42 @@ func TestSaveAndOpen(t *testing.T) {
 	if string(readContent) != fileContent {
 		t.Errorf("content mismatch: got %q, wanted %q", readContent, fileContent)
 	}
+}
+
+func TestSave_CreateFileError(t *testing.T) {
+	svc, err := NewStorageService(t.TempDir())
+	require.NoError(t, err)
+
+	file, header := createMultipartFileHelper(t, "test.txt", "content")
+	header.Filename = "bad\x00name.txt"
+	_, err = svc.Save(file, header)
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "create file")
+}
+
+type errReader struct{}
+
+func (e errReader) Read(p []byte) (int, error) { return 0, io.ErrUnexpectedEOF }
+
+type mockMultipartFile struct {
+	io.Reader
+}
+
+func (m *mockMultipartFile) Close() error                                 { return nil }
+func (m *mockMultipartFile) Seek(offset int64, whence int) (int64, error) { return 0, nil }
+func (m *mockMultipartFile) ReadAt(p []byte, off int64) (n int, err error) {
+	return m.Reader.Read(p)
+}
+
+func TestSave_CopyError(t *testing.T) {
+	svc, err := NewStorageService(t.TempDir())
+	require.NoError(t, err)
+
+	_, header := createMultipartFileHelper(t, "test.txt", "content")
+	badFile := &mockMultipartFile{Reader: &errReader{}}
+	_, err = svc.Save(badFile, header)
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "copy file")
 }
 
 func TestOpen_NonExistent(t *testing.T) {

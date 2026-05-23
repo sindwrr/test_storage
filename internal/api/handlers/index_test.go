@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"errors"
+	"fmt"
 	"html/template"
 	"net/http"
 	"net/http/httptest"
@@ -12,6 +13,7 @@ import (
 	"time"
 
 	"github.com/sindwrr/test_storage/internal/models"
+	"github.com/stretchr/testify/assert"
 )
 
 func setupTestEnvironment(t *testing.T, templateContent string) (*IndexHandler, func()) {
@@ -115,4 +117,28 @@ func TestIndexHandler_Handle_ArtifactLoadError(t *testing.T) {
 	if !strings.Contains(rec.Body.String(), "Failed to load artifacts") {
 		t.Errorf("expected error message, got %s", rec.Body.String())
 	}
+}
+
+func TestIndexHandler_Handle_WithTimeFilters(t *testing.T) {
+	handler, cleanup := setupTestEnvironment(t, `<html>{{ range .Artifacts }}{{ .FileName }}{{ end }}</html>`)
+	defer cleanup()
+
+	from := time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC)
+	to := time.Date(2026, 5, 1, 0, 0, 0, 0, time.UTC)
+
+	handler.metaSvc = &mockMetadataService{
+		getArtifactInfoFn: func(component, build, suite string, fromTime, toTime time.Time) ([]models.ArtifactInfo, error) {
+			assert.Equal(t, from, fromTime)
+			assert.Equal(t, to, toTime)
+			return []models.ArtifactInfo{}, nil
+		},
+	}
+
+	url := fmt.Sprintf("/?from=%s&to=%s", from.Format("2006-01-02T15:04"), to.Format("2006-01-02T15:04"))
+	req := httptest.NewRequest("GET", url, nil)
+	req.AddCookie(&http.Cookie{Name: "session", Value: "demo"})
+	rec := httptest.NewRecorder()
+	handler.Handle(rec, req)
+
+	assert.Equal(t, http.StatusOK, rec.Code)
 }

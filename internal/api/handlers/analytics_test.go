@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -9,6 +10,7 @@ import (
 	"testing"
 
 	"github.com/sindwrr/test_storage/internal/models/analytics"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestArtifactsPerDay_ReturnsJSON(t *testing.T) {
@@ -62,6 +64,20 @@ func TestStatusDistribution_ReturnsJSON(t *testing.T) {
 	if rec.Code != http.StatusOK {
 		t.Errorf("expected 200, got %d", rec.Code)
 	}
+}
+
+func TestStatusDistribution_Error(t *testing.T) {
+	svc := &mockAnalyticsService{
+		statusDistFn: func(ctx context.Context) ([]analytics.StatusCount, error) {
+			return nil, errors.New("db error")
+		},
+	}
+	h := NewAnalyticsHandler(svc)
+	req := httptest.NewRequest("GET", "/analytics/status-distribution", nil)
+	req.AddCookie(&http.Cookie{Name: "session", Value: "admin"})
+	rec := httptest.NewRecorder()
+	h.StatusDistribution(rec, req)
+	assert.Equal(t, http.StatusInternalServerError, rec.Code)
 }
 
 func TestAnalyticsPageHandler_Success(t *testing.T) {
