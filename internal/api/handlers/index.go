@@ -38,9 +38,21 @@ func (h *IndexHandler) Handle(w http.ResponseWriter, r *http.Request) {
 	build := r.URL.Query().Get("build")
 	suite := r.URL.Query().Get("suite")
 
-	// TODO: Add time filters
-	fromTime := time.Time{}
-	toTime := time.Now()
+	var fromTime, toTime time.Time
+	if fromStr := r.URL.Query().Get("from"); fromStr != "" {
+		if t, err := time.Parse("2006-01-02T15:04", fromStr); err == nil {
+			fromTime = t
+		}
+	}
+	if toStr := r.URL.Query().Get("to"); toStr != "" {
+		if t, err := time.Parse("2006-01-02T15:04", toStr); err == nil {
+			toTime = t
+		}
+	}
+
+	if toTime.IsZero() {
+		toTime = time.Now()
+	}
 
 	artifacts, err := h.metaSvc.GetArtifactInfo(component, build, suite, fromTime, toTime)
 	log.Printf("Found %d artifacts", len(artifacts))
