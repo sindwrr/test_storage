@@ -206,7 +206,7 @@ func TestCreateArtifact_Success(t *testing.T) {
 	mock.ExpectBegin()
 	mock.ExpectCommit()
 
-	err := svc.CreateArtifact("/tmp/test.log", 1024, "core", "v1.0", "smoke")
+	err := svc.CreateArtifact("/tmp/test.log", 1024, "core", "v1.0", "smoke", "Passed")
 	assert.NoError(t, err)
 	assert.NoError(t, mock.ExpectationsWereMet())
 }
@@ -217,7 +217,7 @@ func TestCreateArtifact_BeginTxError(t *testing.T) {
 
 	mock.ExpectBegin().WillReturnError(errors.New("connection refused"))
 
-	err := svc.CreateArtifact("/tmp/test.log", 1024, "core", "v1", "smoke")
+	err := svc.CreateArtifact("/tmp/test.log", 1024, "core", "v1", "smoke", "Passed")
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "begin tx")
 	assert.NoError(t, mock.ExpectationsWereMet())
@@ -234,7 +234,7 @@ func TestCreateArtifact_ComponentError(t *testing.T) {
 	mock.ExpectBegin()
 	mock.ExpectRollback()
 
-	err := svc.CreateArtifact("/tmp/test.log", 1024, "core", "v1", "smoke")
+	err := svc.CreateArtifact("/tmp/test.log", 1024, "core", "v1", "smoke", "Passed")
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "component")
 	assert.NoError(t, mock.ExpectationsWereMet())
@@ -262,7 +262,7 @@ func TestCreateArtifact_CommitError(t *testing.T) {
 	mock.ExpectBegin()
 	mock.ExpectCommit().WillReturnError(errors.New("commit error"))
 
-	err := svc.CreateArtifact("/tmp/test.log", 1024, "core", "v1", "smoke")
+	err := svc.CreateArtifact("/tmp/test.log", 1024, "core", "v1", "smoke", "Passed")
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "commit")
 	assert.NoError(t, mock.ExpectationsWereMet())

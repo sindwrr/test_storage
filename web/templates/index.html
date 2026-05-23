@@ -47,6 +47,7 @@
                 <th>Suite</th>
                 <th>Upload time</th>
                 <th>Result</th>
+                <th>Preview</th>
                 <th>Download</th>
             </tr>
             {{range .Artifacts}}
@@ -59,10 +60,11 @@
                 <td>{{.Suite}}</td>
                 <td>{{.UploadTime.Format "2006-01-02 15:04:05.000000"}}</td>
                 <td>{{.Result}}</td>
+                <td><a href="/preview?id={{.ID}}">Preview</a></td>
                 <td><a href="{{.DownloadURL}}">Download</a></td>
             </tr>
             {{else}}
-            <tr><td colspan="9">No artifacts found.</td></tr>
+            <tr><td colspan="10">No artifacts found.</td></tr>
             {{end}}
         </table>
     </div>

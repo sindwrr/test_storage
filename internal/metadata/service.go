@@ -23,7 +23,7 @@ func NewMetadataService(db *sql.DB) MetadataService {
 	}
 }
 
-func (s *metadataService) CreateArtifact(filePath string, fileSize int64, component string, build string, suite string) error {
+func (s *metadataService) CreateArtifact(filePath string, fileSize int64, component string, build string, suite string, result string) error {
 	ext := filepath.Ext(filePath)
 	fileTypeID := 1
 	switch ext {
@@ -66,7 +66,7 @@ func (s *metadataService) CreateArtifact(filePath string, fileSize int64, compon
 		return fmt.Errorf("run status: %w", err)
 	}
 
-	resultStatusID, err := s.repo.GetOrCreateStatus(ctx, tx, "result_statuses", "Passed")
+	resultStatusID, err := s.repo.GetOrCreateStatus(ctx, tx, "result_statuses", result)
 	if err != nil {
 		return fmt.Errorf("result status: %w", err)
 	}

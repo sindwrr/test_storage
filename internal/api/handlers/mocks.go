@@ -18,14 +18,14 @@ var errSome = errors.New("test error")
 // Metadata
 // -------------------------------------------
 type mockMetadataService struct {
-	createArtifactFn  func(filePath string, fileSize int64, component, build, suite string) error
+	createArtifactFn  func(filePath string, fileSize int64, component, build, suite, result string) error
 	getArtifactInfoFn func(component, build, suite string, fromTime, toTime time.Time) ([]models.ArtifactInfo, error)
 	getFilePathByIDFn func(ctx context.Context, id int64) (string, error)
 }
 
-func (m *mockMetadataService) CreateArtifact(filePath string, fileSize int64, component, build, suite string) error {
+func (m *mockMetadataService) CreateArtifact(filePath string, fileSize int64, component, build, suite, result string) error {
 	if m.createArtifactFn != nil {
-		return m.createArtifactFn(filePath, fileSize, component, build, suite)
+		return m.createArtifactFn(filePath, fileSize, component, build, suite, result)
 	}
 	return nil
 }

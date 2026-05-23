@@ -45,6 +45,8 @@ test_storage
 │  │  │  ├─ logout.go
 │  │  │  ├─ logout_test.go
 │  │  │  ├─ mocks.go
+│  │  │  ├─ preview.go
+│  │  │  ├─ preview_test.go
 │  │  │  ├─ upload.go
 │  │  │  └─ upload_test.go
 │  │  ├─ middleware
@@ -94,6 +96,10 @@ test_storage
 │  │  ├─ test_suite.go
 │  │  ├─ user.go
 │  │  └─ user_group.go
+│  ├─ preview
+│  │  ├─ interface.go
+│  │  ├─ preview_test.go
+│  │  └─ service.go
 │  ├─ storage
 │  │  ├─ interface.go
 │  │  ├─ service.go

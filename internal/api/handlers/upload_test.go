@@ -77,7 +77,7 @@ func TestUploadHandler_Success(t *testing.T) {
 		},
 	}
 	meta := &mockMetadataService{
-		createArtifactFn: func(filePath string, fileSize int64, component, build, suite string) error {
+		createArtifactFn: func(filePath string, fileSize int64, component, build, suite, result string) error {
 			return nil
 		},
 	}
@@ -88,7 +88,7 @@ func TestUploadHandler_Success(t *testing.T) {
 	part.Write([]byte("content"))
 	writer.Close()
 
-	req := httptest.NewRequest(http.MethodPost, "/upload?component=core&build=v1&suite=smoke", body)
+	req := httptest.NewRequest(http.MethodPost, "/upload?component=core&build=v1&suite=smoke&result=Passed", body)
 	req.Header.Set("Content-Type", writer.FormDataContentType())
 	rec := httptest.NewRecorder()
 	h := NewUploadHandler(svc, meta, 1<<20)
@@ -117,7 +117,7 @@ func TestUploadHandler_SaveError(t *testing.T) {
 	part.Write([]byte("data"))
 	writer.Close()
 
-	req := httptest.NewRequest(http.MethodPost, "/upload?component=c&build=b&suite=s", body)
+	req := httptest.NewRequest(http.MethodPost, "/upload?component=c&build=b&suite=s&result=r", body)
 	req.Header.Set("Content-Type", writer.FormDataContentType())
 	rec := httptest.NewRecorder()
 	h.Handle(rec, req)

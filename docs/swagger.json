@@ -404,6 +404,62 @@
                 }
             }
         },
+        "/preview": {
+            "get": {
+                "description": "Возвращает содержимое файла-артефакта по его ID для отображения в браузере.",
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "tags": [
+                    "artifacts"
+                ],
+                "summary": "Предпросмотр артефакта",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Идентификатор артефакта",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Содержимое артефакта",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "400": {
+                        "description": "Некорректный запрос (отсутствует или невалидный ID)",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Артефакт не найден",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Внутренняя ошибка сервера",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/upload": {
             "post": {
                 "description": "Загружает в систему файл артефакта и метаданные.",
@@ -443,6 +499,13 @@
                         "type": "string",
                         "description": "Набор тестов",
                         "name": "suite",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Результат прогона",
+                        "name": "result",
                         "in": "query",
                         "required": true
                     }
@@ -515,6 +578,9 @@
                 "id": {
                     "type": "integer",
                     "format": "int64"
+                },
+                "result": {
+                    "type": "string"
                 },
                 "suite": {
                     "type": "string"

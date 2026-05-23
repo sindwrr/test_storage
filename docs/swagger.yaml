@@ -30,6 +30,8 @@ definitions:
       id:
         format: int64
         type: integer
+      result:
+        type: string
       suite:
         type: string
       uploadTime:
@@ -304,6 +306,44 @@ paths:
       summary: Выйти из системы
       tags:
       - auth
+  /preview:
+    get:
+      description: Возвращает содержимое файла-артефакта по его ID для отображения
+        в браузере.
+      parameters:
+      - description: Идентификатор артефакта
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/octet-stream
+      responses:
+        "200":
+          description: Содержимое артефакта
+          schema:
+            type: file
+        "400":
+          description: Некорректный запрос (отсутствует или невалидный ID)
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Артефакт не найден
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Предпросмотр артефакта
+      tags:
+      - artifacts
   /upload:
     post:
       consumes:
@@ -328,6 +368,11 @@ paths:
       - description: Набор тестов
         in: query
         name: suite
+        required: true
+        type: string
+      - description: Результат прогона
+        in: query
+        name: result
         required: true
         type: string
       produces:

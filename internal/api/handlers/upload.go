@@ -26,6 +26,7 @@ func NewUploadHandler(storage storage.StorageService, metadata metadata.Metadata
 // @Param        component  query     string  true  "Тестируемый компонент"
 // @Param        build      query     string  true  "Номер сборки"
 // @Param        suite      query     string  true  "Набор тестов"
+// @Param        result     query     string  true  "Результат прогона"
 // @Success      201  {string}  string  "Файл успешно загружен"
 // @Failure      400  {string}  string  "Ошибка в запросе"
 // @Failure      500  {string}  string  "Внутренняя ошибка сервера"
@@ -68,13 +69,19 @@ func (h *uploadHandler) Handle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	result := r.FormValue("result")
+	if result == "" {
+		http.Error(w, "Missing result", http.StatusBadRequest)
+		return
+	}
+
 	filePath, err := h.storage.Save(file, header)
 	if err != nil {
 		http.Error(w, "Failed to save file", http.StatusInternalServerError)
 		return
 	}
 
-	err = h.metadata.CreateArtifact(filePath, header.Size, component, build, suite)
+	err = h.metadata.CreateArtifact(filePath, header.Size, component, build, suite, result)
 	if err != nil {
 		http.Error(w, "Failed to save metadata in DB", http.StatusInternalServerError)
 		return
