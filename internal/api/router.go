@@ -23,7 +23,7 @@ func NewRouter(db *sql.DB, cfg config.Config) http.Handler {
 	mux := http.NewServeMux()
 
 	healthSvc := health.NewService(db)
-	authSvc := auth.NewService(cfg.LDAPAddr, cfg.LDAPBaseDN, cfg.LDAPUser, cfg.LDAPPassword)
+	authSvc := auth.NewService(cfg.LDAPAddr, cfg.LDAPBaseDN, cfg.LDAPUser, cfg.LDAPPassword, db)
 
 	storageSvc, err := storage.NewStorageService(cfg.ArtifactVolume)
 	if err != nil {

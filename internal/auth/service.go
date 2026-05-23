@@ -1,10 +1,13 @@
 package auth
 
 import (
+	"context"
+	"database/sql"
 	"fmt"
 	"log"
 
 	"github.com/go-ldap/ldap/v3"
+	authrepo "github.com/sindwrr/test_storage/internal/auth/repository"
 )
 
 type ldapConn interface {
@@ -17,15 +20,11 @@ type realLdapConn struct {
 	conn *ldap.Conn
 }
 
-func (r *realLdapConn) Bind(username, password string) error {
-	return r.conn.Bind(username, password)
-}
+func (r *realLdapConn) Bind(username, password string) error { return r.conn.Bind(username, password) }
 func (r *realLdapConn) Search(req *ldap.SearchRequest) (*ldap.SearchResult, error) {
 	return r.conn.Search(req)
 }
-func (r *realLdapConn) Close() {
-	r.conn.Close()
-}
+func (r *realLdapConn) Close() { r.conn.Close() }
 
 type authService struct {
 	ldapAddr     string
@@ -33,14 +32,16 @@ type authService struct {
 	bindUser     string
 	bindPassword string
 	dialer       func(addr string) (ldapConn, error)
+	userRepo     authrepo.UserRepository
 }
 
-func NewService(ldapAddr, ldapBaseDN, bindUser, bindPassword string) AuthService {
+func NewService(ldapAddr, ldapBaseDN, bindUser, bindPassword string, db *sql.DB) AuthService {
 	return &authService{
 		ldapAddr:     ldapAddr,
 		ldapBaseDN:   ldapBaseDN,
 		bindUser:     bindUser,
 		bindPassword: bindPassword,
+		userRepo:     authrepo.NewUserRepo(db),
 		dialer: func(addr string) (ldapConn, error) {
 			conn, err := ldap.DialURL(fmt.Sprintf("ldap://%s", addr))
 			if err != nil {
@@ -83,6 +84,12 @@ func (s *authService) Validate(username, password string) bool {
 	} else {
 		err = conn.Bind(username, password)
 		authenticated = (err == nil)
+	}
+
+	if authenticated && s.userRepo != nil {
+		if err := s.userRepo.EnsureUser(context.Background(), username); err != nil {
+			log.Printf("failed to ensure user in DB: %v", err)
+		}
 	}
 
 	return authenticated

@@ -14,3 +14,6 @@ INSERT INTO result_statuses (id, name) VALUES (2, 'Failed') ON CONFLICT (id) DO 
 INSERT INTO result_statuses (id, name) VALUES (3, 'Skipped') ON CONFLICT (id) DO NOTHING;
 INSERT INTO result_statuses (id, name) VALUES (4, 'Error') ON CONFLICT (id) DO NOTHING;
 INSERT INTO result_statuses (id, name) VALUES (5, 'Missing') ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO user_groups (id, name) VALUES (1, 'Users') ON CONFLICT (id) DO NOTHING;
+INSERT INTO user_groups (id, name) VALUES (2, 'Admins') ON CONFLICT (id) DO NOTHING;
