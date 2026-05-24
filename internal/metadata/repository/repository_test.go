@@ -270,7 +270,7 @@ func TestGetArtifactInfo_WithFilters(t *testing.T) {
 		WithArgs("core", from, to).
 		WillReturnRows(sqlmock.NewRows([]string{
 			"artifact_id", "download_url", "file_name", "file_size",
-			"component", "build", "suite", "upload_time", "result", // добавлено "result"
+			"component", "build", "suite", "upload_time", "result",
 		}).AddRow(2, "/dl/2", "b.log", 1200, "core", "v2", "regression", time.Now(), "passed"))
 
 	results, err := repo.GetArtifactInfo("core", "", "", from, to)

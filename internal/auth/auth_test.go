@@ -60,7 +60,7 @@ func TestValidate_ServiceBind_SearchEmpty(t *testing.T) {
 			return nil
 		},
 		searchFunc: func(req *ldap.SearchRequest) (*ldap.SearchResult, error) {
-			return &ldap.SearchResult{Entries: []*ldap.Entry{}}, nil // 0 записей
+			return &ldap.SearchResult{Entries: []*ldap.Entry{}}, nil
 		},
 	}
 	svc := &authService{
@@ -108,7 +108,7 @@ type mockUserRepo struct {
 	setActiveCalled  bool
 	setActiveArgs    [2]interface{}
 	setActiveErr     error
-	getGroupIDFn     func(username string) (int, error) // новое
+	getGroupIDFn     func(username string) (int, error)
 	getGroupIDCalled bool
 }
 

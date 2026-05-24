@@ -47,7 +47,7 @@ func NewRouter(db *sql.DB, cfg config.Config) http.Handler {
 	mux.HandleFunc("/logout", logoutHandler.Handle)
 	mux.HandleFunc("/health/alive", handlers.AliveHandler(healthSvc))
 	mux.HandleFunc("/health/ready", handlers.ReadyHandler(healthSvc))
-	mux.HandleFunc("/upload", uploadHandler.Handle)
+	mux.HandleFunc("/upload", middleware.RequireAuth(middleware.RequireUpload(authSvc)(uploadHandler.Handle)))
 
 	mux.HandleFunc("/", middleware.RequireAuth(indexHandler.Handle))
 	mux.HandleFunc("/artifact/download/{id}", middleware.RequireAuth(downloadHandler.Handle))

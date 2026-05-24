@@ -17,3 +17,4 @@ INSERT INTO result_statuses (id, name) VALUES (5, 'Missing') ON CONFLICT (id) DO
 
 INSERT INTO user_groups (id, name) VALUES (1, 'Users') ON CONFLICT (id) DO NOTHING;
 INSERT INTO user_groups (id, name) VALUES (2, 'Admins') ON CONFLICT (id) DO NOTHING;
+INSERT INTO user_groups (id, name) VALUES (3, 'ATF') ON CONFLICT (id) DO NOTHING;

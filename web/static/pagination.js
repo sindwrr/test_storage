@@ -1,10 +1,8 @@
-// web/static/pagination.js
 (function() {
     const rowsPerPage = 20;
     const table = document.querySelector('table');
     if (!table) return;
 
-    // ищем все строки с ячейками данных (исключая заголовок)
     const rows = table.querySelectorAll('tr');
     const dataRows = Array.from(rows).filter(row => row.querySelector('td'));
     if (dataRows.length <= rowsPerPage) return;
@@ -12,7 +10,6 @@
     let currentPage = 1;
     const totalPages = Math.ceil(dataRows.length / rowsPerPage);
 
-    // скрываем все строки
     dataRows.forEach(row => (row.style.display = 'none'));
 
     function showPage(page) {
@@ -23,14 +20,12 @@
         });
     }
 
-    // создаём контейнер для кнопок
     const paginationContainer = document.createElement('div');
     paginationContainer.style.cssText = 'text-align:center; margin-top:1rem;';
 
     function renderButtons() {
         paginationContainer.innerHTML = '';
 
-        // Previous
         const prevBtn = document.createElement('button');
         prevBtn.textContent = 'Previous';
         prevBtn.disabled = currentPage === 1;
@@ -44,7 +39,6 @@
         });
         paginationContainer.appendChild(prevBtn);
 
-        // page numbers
         const maxVisible = 5;
         let startPage = Math.max(1, currentPage - 2);
         let endPage = Math.min(totalPages, startPage + maxVisible - 1);
@@ -97,7 +91,6 @@
             paginationContainer.appendChild(lastBtn);
         }
 
-        // Next
         const nextBtn = document.createElement('button');
         nextBtn.textContent = 'Next';
         nextBtn.disabled = currentPage === totalPages;

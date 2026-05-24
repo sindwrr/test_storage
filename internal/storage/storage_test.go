@@ -63,7 +63,6 @@ func TestNewStorageService_CreatesDir(t *testing.T) {
 }
 
 func TestNewStorageService_MkdirError(t *testing.T) {
-	// Путь с нулевым байтом гарантированно вызывает ошибку
 	_, err := NewStorageService("/invalid\x00path")
 	assert.Error(t, err)
 }

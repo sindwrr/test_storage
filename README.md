@@ -55,7 +55,9 @@ test_storage
 │  │  │  ├─ auth.go
 │  │  │  ├─ auth_test.go
 │  │  │  ├─ cors.go
-│  │  │  └─ cors_test.go
+│  │  │  ├─ cors_test.go
+│  │  │  ├─ upload.go
+│  │  │  └─ upload_test.go
 │  │  ├─ router.go
 │  │  └─ router_test.go
 │  ├─ auth
