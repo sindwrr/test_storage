@@ -51,3 +51,35 @@ func TestEnsureUser_ExecError(t *testing.T) {
 	assert.Error(t, err)
 	assert.NoError(t, mock.ExpectationsWereMet())
 }
+
+func TestSetActive_Success(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	assert.NoError(t, err)
+	defer db.Close()
+
+	repo := NewUserRepo(db)
+
+	mock.ExpectExec(regexp.QuoteMeta("UPDATE users SET is_active = $1 WHERE username = $2")).
+		WithArgs(true, "testuser").
+		WillReturnResult(sqlmock.NewResult(0, 1))
+
+	err = repo.SetActive(context.Background(), "testuser", true)
+	assert.NoError(t, err)
+	assert.NoError(t, mock.ExpectationsWereMet())
+}
+
+func TestSetActive_Error(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	assert.NoError(t, err)
+	defer db.Close()
+
+	repo := NewUserRepo(db)
+
+	mock.ExpectExec(regexp.QuoteMeta("UPDATE users SET is_active = $1 WHERE username = $2")).
+		WithArgs(false, "testuser").
+		WillReturnError(sql.ErrConnDone)
+
+	err = repo.SetActive(context.Background(), "testuser", false)
+	assert.Error(t, err)
+	assert.NoError(t, mock.ExpectationsWereMet())
+}

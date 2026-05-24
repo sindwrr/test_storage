@@ -41,9 +41,10 @@ func NewRouter(db *sql.DB, cfg config.Config) http.Handler {
 	analyticsHandler := handlers.NewAnalyticsHandler(analyticsSvc)
 	artifactsHandler := handlers.NewArtifactsHandler(metadataSvc)
 	previewHandler := handlers.NewPreviewHandler(previewSvc)
+	logoutHandler := handlers.NewLogoutHandler(authSvc)
 
 	mux.HandleFunc("/login", loginHandler.Handle)
-	mux.HandleFunc("/logout", handlers.LogoutHandler)
+	mux.HandleFunc("/logout", logoutHandler.Handle)
 	mux.HandleFunc("/health/alive", handlers.AliveHandler(healthSvc))
 	mux.HandleFunc("/health/ready", handlers.ReadyHandler(healthSvc))
 	mux.HandleFunc("/upload", uploadHandler.Handle)

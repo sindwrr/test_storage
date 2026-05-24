@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"context"
 	"errors"
 	"testing"
 
@@ -101,4 +102,38 @@ func TestValidate_DialerError(t *testing.T) {
 	}
 	ok := svc.Validate("user", "pass")
 	assert.False(t, ok)
+}
+
+type mockUserRepo struct {
+	setActiveCalled bool
+	setActiveArgs   [2]interface{}
+	setActiveErr    error
+}
+
+func (m *mockUserRepo) EnsureUser(ctx context.Context, username string) error { return nil }
+func (m *mockUserRepo) SetActive(ctx context.Context, username string, active bool) error {
+	m.setActiveCalled = true
+	m.setActiveArgs = [2]interface{}{username, active}
+	return m.setActiveErr
+}
+
+func TestSetUserActive_CallsRepo(t *testing.T) {
+	repo := &mockUserRepo{}
+	svc := &authService{
+		userRepo: repo,
+	}
+	svc.SetUserActive("testuser", true)
+	assert.True(t, repo.setActiveCalled)
+	assert.Equal(t, "testuser", repo.setActiveArgs[0])
+	assert.Equal(t, true, repo.setActiveArgs[1])
+}
+
+func TestSetUserActive_NilRepo(t *testing.T) {
+	svc := &authService{
+		userRepo: nil,
+	}
+
+	assert.NotPanics(t, func() {
+		svc.SetUserActive("testuser", false)
+	})
 }

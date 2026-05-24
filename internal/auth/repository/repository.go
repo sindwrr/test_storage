@@ -26,3 +26,9 @@ func (r *UserRepo) EnsureUser(ctx context.Context, username string) error {
 	_, err := r.db.ExecContext(ctx, query, username)
 	return err
 }
+
+func (r *UserRepo) SetActive(ctx context.Context, username string, active bool) error {
+	const query = `UPDATE users SET is_active = $1 WHERE username = $2`
+	_, err := r.db.ExecContext(ctx, query, active, username)
+	return err
+}

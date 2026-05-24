@@ -94,3 +94,11 @@ func (s *authService) Validate(username, password string) bool {
 
 	return authenticated
 }
+
+func (s *authService) SetUserActive(username string, active bool) {
+	if s.userRepo != nil {
+		if err := s.userRepo.SetActive(context.Background(), username, active); err != nil {
+			log.Printf("failed to set user active=%v: %v", active, err)
+		}
+	}
+}

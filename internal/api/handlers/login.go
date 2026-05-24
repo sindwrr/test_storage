@@ -69,6 +69,8 @@ func (h *LoginHandler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	h.auth.SetUserActive(username, true)
+
 	http.SetCookie(w, &http.Cookie{
 		Name:     "session",
 		Value:    username,

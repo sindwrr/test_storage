@@ -104,7 +104,8 @@ func (m *mockHealthService) Ready(ctx context.Context) error {
 // Auth
 // -------------------------------------------
 type mockAuthService struct {
-	validateFn func(username, password string) bool
+	validateFn  func(username, password string) bool
+	setActiveFn func(username string, active bool)
 }
 
 func (m *mockAuthService) Validate(username, password string) bool {
@@ -112,4 +113,10 @@ func (m *mockAuthService) Validate(username, password string) bool {
 		return m.validateFn(username, password)
 	}
 	return false
+}
+
+func (m *mockAuthService) SetUserActive(username string, active bool) {
+	if m.setActiveFn != nil {
+		m.setActiveFn(username, active)
+	}
 }
