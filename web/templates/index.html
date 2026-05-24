@@ -67,7 +67,12 @@
                 <td>{{.Build}}</td>
                 <td>{{.Suite}}</td>
                 <td>{{.UploadTime.Format "2006-01-02 15:04:05.000000"}}</td>
-                <td>{{.Result}}</td>
+                <td class="{{if eq .Result "Passed"}}result-passed
+                           {{else if eq .Result "Failed"}}result-failed
+                           {{else if eq .Result "Skipped"}}result-skipped
+                           {{else if eq .Result "Error"}}result-error
+                           {{else if eq .Result "Missing"}}result-missing{{end}}">
+                           {{.Result}}</td>
                 <td><a href="/preview?id={{.ID}}">Preview</a></td>
                 <td><a href="{{.DownloadURL}}">Download</a></td>
             </tr>
@@ -76,5 +81,6 @@
             {{end}}
         </table>
     </div>
+    <script src="/static/pagination.js"></script>
 </body>
 </html>

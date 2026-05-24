@@ -161,3 +161,28 @@ a:hover {
     background: #eee;
     color: #333;
 }
+
+.result-passed {
+    color: green;
+    font-weight: bold;
+}
+
+.result-failed {
+    color: red;
+    font-weight: bold;
+}
+
+.result-skipped {
+    color: yellow;
+    font-weight: bold;
+}
+
+.result-error {
+    color: gray;
+    font-weight: bold;
+}
+
+.result-missing {
+    color: violet;
+    font-weight: bold;
+}

@@ -142,7 +142,8 @@ test_storage
    │  ├─ analytics.css
    │  ├─ analytics.js
    │  ├─ index.css
-   │  └─ login.css
+   │  ├─ login.css
+   │  └─ pagination.js
    └─ templates
       ├─ analytics.html
       ├─ index.html

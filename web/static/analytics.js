@@ -33,13 +33,32 @@ async function fetchJSON(url) {
 
     try {
         const status = await fetchJSON('/analytics/status-distribution');
+        const order = ['Passed', 'Failed', 'Skipped', 'Error', 'Missing'];
+        status.sort((a, b) => {
+            const indexA = order.indexOf(a.status);
+            const indexB = order.indexOf(b.status);
+
+            const ia = indexA === -1 ? order.length : indexA;
+            const ib = indexB === -1 ? order.length : indexB;
+            return ia - ib;
+        });
+
+        const colorMap = {
+            'Passed': '#28a745',
+            'Failed': '#dc3545',
+            'Skipped': '#ffc107',
+            'Error': '#5e5e5e',
+            'Missing': '#970290'
+        };
+        const backgroundColors = status.map(s => colorMap[s.status] || '#6c757d');
+
         new Chart(document.getElementById('statusPieChart'), {
             type: 'pie',
             data: {
                 labels: status.map(s => s.status),
                 datasets: [{
                     data: status.map(s => s.count),
-                    backgroundColor: ['#28a745', '#dc3545', '#ffc107', '#17a2b8']
+                    backgroundColor: backgroundColors
                 }]
             },
             options: {
