@@ -102,3 +102,10 @@ func (s *authService) SetUserActive(username string, active bool) {
 		}
 	}
 }
+
+func (s *authService) GetUserGroup(username string) (int, error) {
+	if s.userRepo == nil {
+		return 0, fmt.Errorf("user repository not configured")
+	}
+	return s.userRepo.GetGroupID(context.Background(), username)
+}

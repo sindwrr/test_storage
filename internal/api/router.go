@@ -57,10 +57,12 @@ func NewRouter(db *sql.DB, cfg config.Config) http.Handler {
 	mux.HandleFunc("/analytics", middleware.RequireAuth(handlers.AnalyticsPageHandler))
 	mux.HandleFunc("/preview", middleware.RequireAuth(previewHandler.ServePreview))
 
-	mux.HandleFunc("/docs/", httpSwagger.WrapHandler)
-	mux.HandleFunc("/docs", func(w http.ResponseWriter, r *http.Request) {
+	swaggerHandler := httpSwagger.WrapHandler
+	adminOnly := middleware.RequireAdmin(authSvc)
+	mux.Handle("/docs/", middleware.RequireAuth(adminOnly(swaggerHandler.ServeHTTP)))
+	mux.Handle("/docs", middleware.RequireAuth(adminOnly(func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/docs/index.html", http.StatusMovedPermanently)
-	})
+	})))
 
 	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))))
 

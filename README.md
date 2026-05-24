@@ -50,6 +50,8 @@ test_storage
 │  │  │  ├─ upload.go
 │  │  │  └─ upload_test.go
 │  │  ├─ middleware
+│  │  │  ├─ admin.go
+│  │  │  ├─ admin_test.go
 │  │  │  ├─ auth.go
 │  │  │  ├─ auth_test.go
 │  │  │  ├─ cors.go

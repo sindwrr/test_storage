@@ -7,6 +7,7 @@ import (
 
 type DBTX interface {
 	ExecContext(ctx context.Context, query string, args ...any) (sql.Result, error)
+	QueryRowContext(ctx context.Context, query string, args ...interface{}) *sql.Row
 }
 
 type UserRepo struct {
@@ -31,4 +32,14 @@ func (r *UserRepo) SetActive(ctx context.Context, username string, active bool) 
 	const query = `UPDATE users SET is_active = $1 WHERE username = $2`
 	_, err := r.db.ExecContext(ctx, query, active, username)
 	return err
+}
+
+func (r *UserRepo) GetGroupID(ctx context.Context, username string) (int, error) {
+	const query = `SELECT group_id FROM users WHERE username = $1`
+	var groupID int
+	err := r.db.QueryRowContext(ctx, query, username).Scan(&groupID)
+	if err != nil {
+		return 0, err
+	}
+	return groupID, nil
 }

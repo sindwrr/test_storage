@@ -83,3 +83,35 @@ func TestSetActive_Error(t *testing.T) {
 	assert.Error(t, err)
 	assert.NoError(t, mock.ExpectationsWereMet())
 }
+
+func TestGetGroupID_Success(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	assert.NoError(t, err)
+	defer db.Close()
+
+	repo := NewUserRepo(db)
+	rows := sqlmock.NewRows([]string{"group_id"}).AddRow(2)
+	mock.ExpectQuery(regexp.QuoteMeta(`SELECT group_id FROM users WHERE username = $1`)).
+		WithArgs("admin").
+		WillReturnRows(rows)
+
+	groupID, err := repo.GetGroupID(context.Background(), "admin")
+	assert.NoError(t, err)
+	assert.Equal(t, 2, groupID)
+	assert.NoError(t, mock.ExpectationsWereMet())
+}
+
+func TestGetGroupID_NotFound(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	assert.NoError(t, err)
+	defer db.Close()
+
+	repo := NewUserRepo(db)
+	mock.ExpectQuery(regexp.QuoteMeta(`SELECT group_id FROM users WHERE username = $1`)).
+		WithArgs("nobody").
+		WillReturnError(sql.ErrNoRows)
+
+	_, err = repo.GetGroupID(context.Background(), "nobody")
+	assert.ErrorIs(t, err, sql.ErrNoRows)
+	assert.NoError(t, mock.ExpectationsWereMet())
+}

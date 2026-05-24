@@ -105,9 +105,11 @@ func TestValidate_DialerError(t *testing.T) {
 }
 
 type mockUserRepo struct {
-	setActiveCalled bool
-	setActiveArgs   [2]interface{}
-	setActiveErr    error
+	setActiveCalled  bool
+	setActiveArgs    [2]interface{}
+	setActiveErr     error
+	getGroupIDFn     func(username string) (int, error) // новое
+	getGroupIDCalled bool
 }
 
 func (m *mockUserRepo) EnsureUser(ctx context.Context, username string) error { return nil }
@@ -115,6 +117,13 @@ func (m *mockUserRepo) SetActive(ctx context.Context, username string, active bo
 	m.setActiveCalled = true
 	m.setActiveArgs = [2]interface{}{username, active}
 	return m.setActiveErr
+}
+func (m *mockUserRepo) GetGroupID(ctx context.Context, username string) (int, error) {
+	m.getGroupIDCalled = true
+	if m.getGroupIDFn != nil {
+		return m.getGroupIDFn(username)
+	}
+	return 0, nil
 }
 
 func TestSetUserActive_CallsRepo(t *testing.T) {
@@ -136,4 +145,21 @@ func TestSetUserActive_NilRepo(t *testing.T) {
 	assert.NotPanics(t, func() {
 		svc.SetUserActive("testuser", false)
 	})
+}
+
+func TestGetUserGroup_Success(t *testing.T) {
+	repo := &mockUserRepo{getGroupIDFn: func(u string) (int, error) { return 2, nil }}
+	svc := &authService{userRepo: repo}
+
+	groupID, err := svc.GetUserGroup("admin")
+	assert.NoError(t, err)
+	assert.Equal(t, 2, groupID)
+	assert.True(t, repo.getGroupIDCalled)
+}
+
+func TestGetUserGroup_NilRepo(t *testing.T) {
+	svc := &authService{userRepo: nil}
+	_, err := svc.GetUserGroup("admin")
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "not configured")
 }
