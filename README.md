@@ -14,8 +14,10 @@ GitHub: https://github.com/sindwrr/test_storage
 - [6. API-эндпоинты](#6-api-эндпоинты)
 - [7. Скриншоты веб-интерфейса](#7-скриншоты-веб-интерфейса)
 - [8. Дерево проекта](#8-дерево-проекта)
+- [9. Лицензия](#9-лицензия)
 
 ## 1. Ключевые возможности
+
 - Загрузка и скачивание артефактов любых форматов (логи, изображения, видео, PDF)
 - Хранение метаданных в PostgreSQL с быстрой фильтрацией по компонентам, сборкам, наборам тестов и датам
 - Авторизация через LDAP и локальных пользователей
@@ -151,6 +153,7 @@ GitHub: https://github.com/sindwrr/test_storage
 <img width="928" height="682" alt="image" src="https://github.com/user-attachments/assets/1f9044d9-134e-4fdc-8cd4-ba8a32a0dba2" />
 
 ## 8. Дерево проекта
+
 ```
 test_storage
 ├─ README.md
@@ -299,3 +302,7 @@ test_storage
       ├─ index.html
       └─ login.html
 ```
+
+## 9. Лицензия
+
+MIT License. Подробнее в файле [LICENSE](LICENSE).
