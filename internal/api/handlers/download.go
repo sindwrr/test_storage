@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"fmt"
-	"io"
 	"net/http"
+	"os"
 	"path/filepath"
 	"strconv"
 
@@ -47,23 +47,12 @@ func (h *DownloadHandler) Handle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	file, err := h.storage.Open(filePath)
-	if err != nil {
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
 		http.Error(w, `{"error":"file not found"}`, http.StatusNotFound)
 		return
 	}
-	defer file.Close()
 
-	buf := make([]byte, 512)
-	n, _ := file.Read(buf)
-	contentType := http.DetectContentType(buf[:n])
-
-	if seeker, ok := file.(io.Seeker); ok {
-		seeker.Seek(0, io.SeekStart)
-	}
-
-	w.Header().Set("Content-Type", contentType)
 	w.Header().Set("Content-Disposition", fmt.Sprintf(`attachment; filename="%s"`, filepath.Base(filePath)))
-
-	io.Copy(w, file)
+	w.Header().Set("X-Accel-Redirect", "/protected_files/"+filepath.Base(filePath))
+	w.WriteHeader(http.StatusOK)
 }

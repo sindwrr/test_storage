@@ -12,7 +12,8 @@ test_storage
 ├─ deployments
 │  ├─ .dockerignore
 │  ├─ Dockerfile
-│  └─ docker-compose.yml
+│  ├─ docker-compose.yml
+│  └─ nginx.conf
 ├─ docs
 │  ├─ docs.go
 │  ├─ swagger.json
@@ -54,8 +55,6 @@ test_storage
 │  │  │  ├─ admin_test.go
 │  │  │  ├─ auth.go
 │  │  │  ├─ auth_test.go
-│  │  │  ├─ cors.go
-│  │  │  ├─ cors_test.go
 │  │  │  ├─ upload.go
 │  │  │  └─ upload_test.go
 │  │  ├─ router.go

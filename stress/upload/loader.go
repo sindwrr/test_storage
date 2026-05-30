@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	baseURL   = "http://localhost:8000"
+	baseURL   = "http://localhost:8080"
 	totalReqs = 1000
 	fileSize  = 1024
 )
@@ -56,7 +56,7 @@ func main() {
 			part.Write(fileContent)
 			writer.Close()
 
-			url := fmt.Sprintf("%s/upload?component=%s&build=%s&suite=%s", baseURL, component, build, suite)
+			url := fmt.Sprintf("%s/upload?component=%s&build=%s&suite=%s&result=Passed", baseURL, component, build, suite)
 			req, err := http.NewRequest("POST", url, body)
 			if err != nil {
 				mu.Lock()

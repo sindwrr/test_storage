@@ -24,7 +24,7 @@ import (
 // @title           Test Storage API
 // @version         1.0
 // @description     API для системы хранения артефактов автотестов.
-// @host            localhost:8000
+// @host            localhost:8080
 // @BasePath        /
 func main() {
 	if err := godotenv.Load(); err != nil {

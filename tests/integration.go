@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-const baseURL = "http://localhost:8000"
+const baseURL = "http://localhost:8080"
 
 func main() {
 	cookie, err := login()

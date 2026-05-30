@@ -5,13 +5,21 @@ import (
 	"errors"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 )
 
 func TestDownloadHandler_Success(t *testing.T) {
+	tmpFile, err := os.CreateTemp("", "testfile.log")
+	if err != nil {
+		t.Fatalf("failed to create temp file: %v", err)
+	}
+	defer os.Remove(tmpFile.Name())
+	tmpFile.Close()
+
 	meta := &mockMetadataService{
 		getFilePathByIDFn: func(ctx context.Context, id int64) (string, error) {
-			return "/tmp/testfile.log", nil
+			return tmpFile.Name(), nil
 		},
 	}
 	store := &mockStorageService{}
