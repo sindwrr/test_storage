@@ -156,6 +156,7 @@ GitHub: https://github.com/sindwrr/test_storage
 
 ```
 test_storage
+├─ LICENSE
 ├─ README.md
 ├─ cmd                          # точка входа
 │  └─ app
